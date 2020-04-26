@@ -1,24 +1,35 @@
 import React from 'react';
 import './App.css';
-import * as fs from 'fs';
+import * as protobuf from 'protobufjs';
+import { remote } from 'electron';
+const { dialog } = remote;
 
 function App() {
 
+    function readProto() {
+        dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
+            .then((value) => {
+                const filepath = value.filePaths[0];
+                return protobuf.load(filepath);
+            })
+            .then((root) => {
+                const type = root.lookupType("awesomepackage.AwesomeMessage");
+                console.log(`type: ${JSON.stringify(type)}`);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }
+
     function handleClick() {
-        fs.readFile('/Users/bob/test.txt', (err, data) => {
-            if (err) {
-                alert(err);
-            } else {
-                alert(data);
-            }
-        });
+        readProto();
     }
 
     return (
         <div className="App">
             <header className="App-header">
                 Hallo
-                <button onClick={handleClick}>Press</button>
+                <button onClick={handleClick}>Load Proto</button>
             </header>
         </div>
     );
