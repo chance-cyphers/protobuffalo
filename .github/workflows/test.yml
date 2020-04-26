@@ -34,9 +34,9 @@ jobs:
 
       - name: upload artifact
         uses: actions/upload-artifact@v1
-          with:
-            name: my-artifact
-            path: /output/release.txt
+        with:
+          name: my-artifact
+          path: /output/release.txt
 
 
 # Failing beacuse virtual framebuffer not installed
