@@ -11,10 +11,10 @@ jobs:
         os: [macos-10.14, windows-2019, ubuntu-18.04]
 
     steps:
-      - name: Check out Git repository
+      - name: check out git repository
         uses: actions/checkout@v1
 
-      - name: Install Node.js, NPM and Yarn
+      - name: install node.js, npm and yarn
         uses: actions/setup-node@v1
         with:
           node-version: 13
@@ -24,10 +24,20 @@ jobs:
           yarn install
 
       - name: yarn test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           yarn test
+
+      - name: build
+        run: |
+          mkdir -p /output
+          echo "hellloooo" > /output/release.txt
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v1
+          with:
+            name: my-artifact
+            path: /output/release.txt
+
 
 # Failing beacuse virtual framebuffer not installed
 #          yarn build-e2e
