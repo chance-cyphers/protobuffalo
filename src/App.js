@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import * as protobuf from 'protobufjs';
 import { remote } from 'electron';
+import SourceInput from "./sourceinput/sourceinput";
 const { dialog } = remote;
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <header className="App-header">
                 Hallo
                 <button onClick={handleClick}>Load Proto</button>
+                <SourceInput/>
             </header>
         </div>
     );
