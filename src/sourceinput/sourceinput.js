@@ -9,7 +9,6 @@ const SourceInput = ({stuff}) => {
 
 const mapStateToProps = state => {
     const { sourceInput } = state;
-    console.log(JSON.stringify(sourceInput));
     return sourceInput;
 };
 
