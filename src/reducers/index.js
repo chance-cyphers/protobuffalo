@@ -1,4 +1,4 @@
 import { combineReducers } from "redux";
-import sourceInput from "./sourceInput";
+import sourceInput from "./sourceInputReducer";
 
 export default combineReducers({sourceInput})

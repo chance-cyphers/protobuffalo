@@ -15,6 +15,11 @@ function App() {
                 return protobuf.load(filepath);
             })
             .then((root) => {
+
+                const stuff = root.nested;
+
+                console.log(`root: ${JSON.stringify(stuff)}`);
+
                 const type = root.lookupType("awesomepackage.AwesomeMessage");
                 console.log(`type: ${JSON.stringify(type)}`);
             })
