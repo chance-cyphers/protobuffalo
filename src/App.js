@@ -3,10 +3,12 @@ import './App.css';
 import * as protobuf from 'protobufjs';
 import {remote} from 'electron';
 import SourceInput from "./sourceinput/sourceinput";
+import {protoLoaded} from "./actions/actions";
+import connect from "react-redux/es/connect/connect";
 
 const { dialog } = remote;
 
-function App() {
+function App(props) {
 
     function readProto() {
         dialog.showOpenDialog({properties: ['openFile', 'multiSelections']})
@@ -15,13 +17,7 @@ function App() {
                 return protobuf.load(filepath);
             })
             .then((root) => {
-
-                const stuff = root.nested;
-
-                console.log(`root: ${JSON.stringify(stuff)}`);
-
-                const type = root.lookupType("awesomepackage.AwesomeMessage");
-                console.log(`type: ${JSON.stringify(type)}`);
+                props.protoLoaded(root)
             })
             .catch(err => {
                 console.error(err);
@@ -43,4 +39,4 @@ function App() {
     );
 }
 
-export default App;
+export default connect(null, { protoLoaded })(App);
