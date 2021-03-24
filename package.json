@@ -5,6 +5,7 @@
   "main": "public/electron.js",
   "homepage": "./",
   "dependencies": {
+    "@grpc/proto-loader": "^0.5.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -40,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "@grpc/grpc-js": "^1.2.11",
     "@rescripts/cli": "^0.0.14",
     "@rescripts/rescript-env": "^0.0.12",
     "concurrently": "^5.2.0",

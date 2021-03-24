@@ -1,0 +1,17 @@
+package awesomepackage;
+
+message AwesomeRequest {
+    optional string awesome_field = 1; // becomes awesomeField... or not
+    optional string just_an_average_string = 2;
+//    optional int32 string something_else = 3;
+}
+
+message AwesomeResponse {
+    optional string answer_to_stuff = 1;
+}
+
+service AwesomeService {
+
+    rpc DoThings(AwesomeRequest) returns (AwesomeResponse) {}
+
+}
