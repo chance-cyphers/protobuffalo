@@ -3,7 +3,7 @@ import {protoLoaded} from "../actions/actions";
 
 
 test('sets initial state', () => {
-  const state = sourceInputReducer();
+  const state = sourceInputReducer(initialState, protoLoaded(""));
 
   expect(state.stuff).toEqual("hello from a reducers");
   expect(state.proto).toEqual(null);

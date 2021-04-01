@@ -14,9 +14,6 @@ app.whenReady().then(() => {
         .catch((err) => console.log('An error occurred: ', err));
 });
 
-
-
-
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 800,

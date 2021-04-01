@@ -1,4 +1,4 @@
-import {PROTO_LOADED} from "../actions/actions";
+import {Action, PROTO_LOADED} from "../actions/actions";
 
 export const initialState = {
     stuff: "hello from a reducers",
@@ -13,17 +13,17 @@ export const initialState = {
     }]
 };
 
-export default function (state = initialState, action = {}) {
+export default function (state = initialState, action: Action) {
     if (action.type === PROTO_LOADED) {
-        const packages = Object.entries(action.payload.nested)
-            .map((k, v) => {
-                return k
-            });
+        // const packages = Object.entries(action.payload.nested)
+        //     .map((k, v) => {
+        //         return k
+        //     });
 
         return {
             ...state,
-            proto: packages,
-            services: state.services.concat(packages)
+            proto: state.proto,
+            services: []
         };
     }
 

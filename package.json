@@ -2,7 +2,7 @@
   "name": "protobuffalo",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron.js",
+  "main": "public/electron.ts",
   "homepage": "./",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.6",
@@ -15,7 +15,8 @@
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "typescript": "^4.2.3"
   },
   "scripts": {
     "start": "rescripts start",
@@ -44,6 +45,7 @@
     "@grpc/grpc-js": "^1.2.11",
     "@rescripts/cli": "^0.0.14",
     "@rescripts/rescript-env": "^0.0.12",
+    "@types/jest": "^26.0.22",
     "concurrently": "^5.2.0",
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
