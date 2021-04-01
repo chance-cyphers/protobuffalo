@@ -13,6 +13,9 @@ const packageDefinition = protoLoader.loadSync(
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const awesomepackage = protoDescriptor.awesomepackage;
 
+// console.log(`descriptor: ${JSON.stringify(protoDescriptor)}`)
+// console.log(`awesomepackage: ${JSON.stringify(awesomepackage.AwesomeService)}`)
+
 function doThings(call, callback) {
   const resp = {
     answer_to_stuff: `suuuuuppppp: ${call.request.awesome_field}`

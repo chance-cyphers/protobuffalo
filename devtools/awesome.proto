@@ -13,5 +13,6 @@ message AwesomeResponse {
 service AwesomeService {
 
     rpc DoThings(AwesomeRequest) returns (AwesomeResponse) {}
+    rpc DoMoreThings(AwesomeRequest) returns (AwesomeResponse) {}
 
 }
