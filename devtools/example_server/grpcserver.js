@@ -1,6 +1,7 @@
 const PROTO_PATH = __dirname + '/../awesome.proto';
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
+
 const packageDefinition = protoLoader.loadSync(
     PROTO_PATH,
     {
