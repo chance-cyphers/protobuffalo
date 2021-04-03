@@ -1,9 +1,14 @@
 import React from 'react';
 import {connect} from "react-redux";
 
-const SourceInput = ({stuff}) => {
+const SourceInput = (state) => {
+    const message = state.services.length > 0 && state.services[0].methods.length > 0
+        ? state.services[0].methods[0].name
+        : "hi";
+
     return (
-        <div>eh?: {stuff}</div>
+        <div>ehz?: {message}
+        </div>
     )
 };
 

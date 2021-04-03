@@ -1,63 +1,22 @@
 import sourceInputReducer, {initialState} from "./sourceInputReducer";
 import {protoLoaded} from "../actions/actions";
+import {default as protobuf, Root} from "protobufjs";
 
 
-test('sets initial state', () => {
-  const state = sourceInputReducer(initialState, protoLoaded(""));
+test('load proto', async () => {
+  const root = await protobuf.load(__dirname + '/../../devtools/awesome.proto')
 
-  expect(state.stuff).toEqual("hello from a reducers");
-  expect(state.proto).toEqual(null);
-  expect(state.services.length).toBe(0)
-});
-
-test('load proto', () => {
-  const proto = {
-    nested: {
-      awesomepackage: {
-        nested: {
-          AwesomeRequest: {
-            fields: {
-              awesomeField: {
-                type: 'string',
-                id: 1
-              },
-              justAnAverageString: {
-                type: 'string',
-                id: 2
-              }
-            }
-          },
-          AwesomeResponse: {
-            fields: {
-              answerToStuff: {
-                type: 'string',
-                id: 1
-              }
-            }
-          },
-          AwesomeService: {
-            methods: {
-              DoThings: {
-                requestType: 'AwesomeRequest',
-                responseType: 'AwesomeResponse'
-              },
-              DoMoreThings: {
-                requestType: 'AwesomeRequest',
-                responseType: 'AwesomeResponse',
-                responseStream: true
-              }
-            }
-          }
-        }
-      }
-    }
-  };
-
-  const action = protoLoaded(proto);
+  const action = protoLoaded(root);
 
   const state = sourceInputReducer(initialState, action);
 
-  expect(state.proto).toEqual(proto);
+  console.log(`service: ${JSON.stringify(state.services[0].methods[0].name)}`)
+
+  expect(state.proto).toEqual(root);
   expect(state.services.length).toBe(1);
   expect(state.services[0].name).toBe("AwesomeService");
+  expect(state.services[0].methods.length).toBe(2);
+  expect(state.services[0].methods[0].name).toBe("DoThings");
+  expect(state.services[0].methods[0].requestType).toBe("AwesomeRequest");
+  expect(state.services[0].methods[0].responseType).toBe("AwesomeResponse");
 });

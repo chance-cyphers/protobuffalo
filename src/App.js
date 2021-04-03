@@ -17,7 +17,7 @@ function App(props) {
                 return protobuf.load(filepath);
             })
             .then((root) => {
-                props.protoLoaded(root)
+                props.protoLoaded(root);
             })
             .catch(err => {
                 console.error(err);

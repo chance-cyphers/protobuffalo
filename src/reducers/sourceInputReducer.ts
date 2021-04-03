@@ -1,32 +1,60 @@
 import {Action, PROTO_LOADED} from "../actions/actions";
+import {Method, NamespaceBase, Root} from "protobufjs";
 
 export const initialState = {
-    stuff: "hello from a reducers",
-    proto: null,
-    services: [{
-        name: "",
-        methods: [{
-            name: "",
-            requestType: "",
-            responseType: ""
-        }]
-    }]
+  stuff: "hello from a reducers",
+  proto: undefined,
+  services: Array<Service>()
 };
 
-export default function (state = initialState, action: Action) {
-    if (action.type === PROTO_LOADED) {
-        // const packages = Object.entries(action.payload.nested)
-        //     .map((k, v) => {
-        //         return k
-        //     });
+interface State {
+  stuff: string
+  proto?: Root
+  services: Service[]
+}
 
-        return {
-            ...state,
-            proto: state.proto,
-            services: []
-        };
-    }
+interface Service {
+  name: string
+  methods: Method[]
+}
 
 
-    return state;
+export default function (state: State = initialState, action: Action) {
+
+  if (action.type === PROTO_LOADED) {
+    const firstPackage = action.payload.nestedArray[0] as NamespaceBase;
+
+    const serviceNames = Object.getOwnPropertyNames(firstPackage.nested).filter(item => {
+      try {
+        firstPackage.lookupService(item);
+        return true
+      } catch (e) {
+        return false;
+      }
+    });
+
+    const services = serviceNames.map(serviceName => {
+      const service = firstPackage.lookupService(serviceName);
+
+      const asd = service.methodsArray.map(m => {
+        return {...m}
+      });
+
+      console.log(`methods: ${JSON.stringify(asd)}`);
+
+      return {
+        name: serviceName,
+        methods: [...service.methodsArray]
+      };
+    });
+
+    return {
+      ...state,
+      proto: action.payload,
+      services: services
+    };
+  }
+
+
+  return state;
 }
