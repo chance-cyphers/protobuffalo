@@ -2,9 +2,9 @@ import React from 'react';
 import {connect} from "react-redux";
 import {serviceSelected} from "../actions/actions";
 
-const SourceInput = (props) => {
+const SourceInput = (props: any) => {
 
-  function handleChange(event) {
+  function handleChange(event: any) {
     console.log(`event: ${event.target.value}`);
     props.serviceSelected(event.target.value);
   }
@@ -15,7 +15,7 @@ const SourceInput = (props) => {
           {props.stuff}
         </p>
         <select onChange={handleChange}>
-          {props.services.map(s => {
+          {props.services.map((s: any) => {
             return (<option key={s.name}>{s.name}</option>)
           })}
         </select>
@@ -23,7 +23,7 @@ const SourceInput = (props) => {
   )
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: any) => {
   const {sourceInput} = state;
   return sourceInput;
 };

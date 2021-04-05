@@ -46,6 +46,7 @@
     "@rescripts/cli": "^0.0.14",
     "@rescripts/rescript-env": "^0.0.12",
     "@types/jest": "^26.0.22",
+    "@types/react-redux": "^7.1.16",
     "concurrently": "^5.2.0",
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
