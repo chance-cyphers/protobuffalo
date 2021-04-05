@@ -1,10 +1,10 @@
 import sourceInputReducer, {initialState, State} from "./sourceInputReducer";
-import {protoLoaded, serviceSelected} from "../actions/actions";
+import {methodSelected, protoLoaded, serviceSelected} from "../actions/actions";
 import {default as protobuf} from "protobufjs";
 
 
 test('load proto', async () => {
-  const root = await protobuf.load(__dirname + '/../../devtools/awesome.proto');
+  const root = await protobuf.load(__dirname + '/../../testdata/awesome.proto');
 
   const action = protoLoaded(root);
 
@@ -26,8 +26,13 @@ const carlService = {
     name: "chores",
     requestType: "effort",
     responseType: "cleanStuff"
+  }, {
+    name: "work",
+    requestType: "effort",
+    responseType: "money"
   }]
 };
+
 const stateWithServices: State = {
   ...initialState,
   services: [carlService, {
@@ -53,3 +58,11 @@ test('service selected action switches selected service', () => {
   expect(state.selectedService!).toBe(state.services[1]);
 });
 
+test('method selected action switched selected method', () => {
+  const action = methodSelected("work");
+
+  const state = sourceInputReducer(stateWithServices, action);
+
+  expect(state.selectedMethod!.name).toBe("work");
+  expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methods[1]);
+});

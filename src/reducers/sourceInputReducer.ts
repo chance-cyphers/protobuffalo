@@ -1,11 +1,12 @@
-import {Action, PROTO_LOADED, SERVICE_SELECTED} from "../actions/actions";
+import {Action, METHOD_SELECTED, PROTO_LOADED, SERVICE_SELECTED} from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
 
 export const initialState = {
   stuff: "hello from a reducers",
   proto: undefined,
   services: Array<Service>(),
-  selectedService: undefined
+  selectedService: undefined,
+  selectedMethod: undefined
 };
 
 export interface State {
@@ -13,14 +14,15 @@ export interface State {
   proto?: Root
   services: Service[]
   selectedService?: Service
+  selectedMethod?: Method
 }
 
-interface Service {
+export interface Service {
   name: string
   methods: Method[]
 }
 
-interface Method {
+export interface Method {
   name: string
   requestType: string
   responseType: string
@@ -31,6 +33,11 @@ export default function (state: State = initialState, action: Action): State {
   if (action.type === SERVICE_SELECTED) {
     const selectedService = state.services.find(s => s.name === action.payload);
     return { ...state, selectedService: selectedService };
+  }
+
+  if (action.type === METHOD_SELECTED) {
+    const selectedMethod = state.selectedService!.methods.find(m => m.name === action.payload);
+    return { ...state, selectedMethod: selectedMethod };
   }
 
   if (action.type === PROTO_LOADED) {

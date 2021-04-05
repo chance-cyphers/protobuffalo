@@ -16,10 +16,3 @@ service AwesomeService {
     rpc DoMoreThings(AwesomeRequest) returns (AwesomeResponse) {}
 
 }
-
-service MehService {
-
-    rpc DoThingsPoorly(AwesomeRequest) returns (AwesomeResponse) {}
-    rpc DoNothing(AwesomeRequest) returns (AwesomeResponse) {}
-
-}
