@@ -2,7 +2,7 @@
   "name": "protobuffalo",
   "version": "0.1.0",
   "private": true,
-  "main": "public/electron.ts",
+  "main": "public/electron.js",
   "homepage": "./",
   "dependencies": {
     "@grpc/proto-loader": "^0.5.6",
