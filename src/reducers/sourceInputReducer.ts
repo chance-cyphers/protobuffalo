@@ -1,16 +1,18 @@
-import {Action, PROTO_LOADED} from "../actions/actions";
-import {Method, NamespaceBase, Root} from "protobufjs";
+import {Action, PROTO_LOADED, SERVICE_SELECTED} from "../actions/actions";
+import {NamespaceBase, Root} from "protobufjs";
 
 export const initialState = {
   stuff: "hello from a reducers",
   proto: undefined,
-  services: Array<Service>()
+  services: Array<Service>(),
+  selectedService: undefined
 };
 
-interface State {
+export interface State {
   stuff: string
   proto?: Root
   services: Service[]
+  selectedService?: Service
 }
 
 interface Service {
@@ -18,8 +20,18 @@ interface Service {
   methods: Method[]
 }
 
+interface Method {
+  name: string
+  requestType: string
+  responseType: string
+}
 
-export default function (state: State = initialState, action: Action) {
+export default function (state: State = initialState, action: Action): State {
+
+  if (action.type === SERVICE_SELECTED) {
+    const selectedService = state.services.find(s => s.name === action.payload);
+    return { ...state, selectedService: selectedService };
+  }
 
   if (action.type === PROTO_LOADED) {
     const firstPackage = action.payload.nestedArray[0] as NamespaceBase;
@@ -36,12 +48,6 @@ export default function (state: State = initialState, action: Action) {
     const services = serviceNames.map(serviceName => {
       const service = firstPackage.lookupService(serviceName);
 
-      const asd = service.methodsArray.map(m => {
-        return {...m}
-      });
-
-      console.log(`methods: ${JSON.stringify(asd)}`);
-
       return {
         name: serviceName,
         methods: [...service.methodsArray]
@@ -51,10 +57,10 @@ export default function (state: State = initialState, action: Action) {
     return {
       ...state,
       proto: action.payload,
-      services: services
+      services: services,
+      selectedService: services[0]
     };
   }
-
 
   return state;
 }

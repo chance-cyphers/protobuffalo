@@ -1,20 +1,33 @@
 import React from 'react';
 import {connect} from "react-redux";
+import {serviceSelected} from "../actions/actions";
 
-const SourceInput = (state) => {
-    const message = state.services.length > 0 && state.services[0].methods.length > 0
-        ? state.services[0].methods[0].name
-        : "hi";
+const SourceInput = (props) => {
 
-    return (
-        <div>ehz?: {message}
-        </div>
-    )
+  function handleChange(event) {
+    console.log(`event: ${event.target.value}`);
+    props.serviceSelected(event.target.value);
+  }
+
+  return (
+      <div>
+        <p>
+          {props.stuff}
+        </p>
+        <select onChange={handleChange}>
+          {props.services.map(s => {
+            return (<option key={s.name}>{s.name}</option>)
+          })}
+        </select>
+      </div>
+  )
 };
 
 const mapStateToProps = state => {
-    const { sourceInput } = state;
-    return sourceInput;
+  const {sourceInput} = state;
+  return sourceInput;
 };
 
-export default connect(mapStateToProps)(SourceInput);
+const mapDispatchToProps = {serviceSelected};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SourceInput);
