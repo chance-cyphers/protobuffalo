@@ -3,10 +3,12 @@ import {
   JSON_BODY_CHANGED,
   METHOD_SELECTED,
   PROTO_LOADED,
-  RPC_INVOKED,
+  RPC_INVOKED, rpcFailed, rpcSuccess,
   SERVICE_SELECTED
 } from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
+import {Cmd, loop, Loop} from "redux-loop";
+import {doStuff} from "../side-effects/doStuff";
 
 export const initialState = {
   stuff: "hello from a reducers",
@@ -37,9 +39,14 @@ export interface Method {
   responseType: string
 }
 
-export default function (state: State = initialState, action: Action): State {
+export default function (state: State = initialState, action: Action): State | Loop<State> {
 
   if (action.type === RPC_INVOKED) {
+    return loop(state, Cmd.run(doStuff, {
+      successActionCreator: rpcSuccess,
+      failActionCreator: rpcFailed,
+      args: []
+    }));
   }
 
   if (action.type === SERVICE_SELECTED) {

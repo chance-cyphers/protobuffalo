@@ -8,7 +8,7 @@ test('load proto', async () => {
 
   const action = protoLoaded(root);
 
-  const state = sourceInputReducer(initialState, action);
+  const state = sourceInputReducer(initialState, action) as State;
 
   expect(state.proto).toEqual(root);
   expect(state.services.length).toBe(1);
@@ -52,7 +52,7 @@ const stateWithServices: State = {
 test('service selected action switches selected service', () => {
   const action = serviceSelected("bob");
 
-  const state = sourceInputReducer(stateWithServices, action);
+  const state = sourceInputReducer(stateWithServices, action) as State;
 
   expect(state.selectedService!.name).toBe("bob");
   expect(state.selectedService!).toBe(state.services[1]);
@@ -61,7 +61,7 @@ test('service selected action switches selected service', () => {
 test('method selected action switched selected method', () => {
   const action = methodSelected("work");
 
-  const state = sourceInputReducer(stateWithServices, action);
+  const state = sourceInputReducer(stateWithServices, action) as State;
 
   expect(state.selectedMethod!.name).toBe("work");
   expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methods[1]);
@@ -70,7 +70,7 @@ test('method selected action switched selected method', () => {
 test('json body changed, keeps track of json', () => {
   const action = jsonBodyChanged("I'm a json!");
 
-  const state = sourceInputReducer(initialState, action);
+  const state = sourceInputReducer(initialState, action) as State;
 
   expect(state.jsonBody).toBe("I'm a json!")
 });
