@@ -14,8 +14,8 @@ export type Action =
     | { type: typeof METHOD_SELECTED, payload: string }
     | { type: typeof JSON_BODY_CHANGED, payload: string }
     | { type: typeof RPC_INVOKED }
-    | { type: typeof RPC_SUCCESS }
-    | { type: typeof RPC_FAILED }
+    | { type: typeof RPC_SUCCESS, payload: any }
+    | { type: typeof RPC_FAILED, payload: any }
 
 export function protoLoaded(root: Root): Action {
   return {type: PROTO_LOADED, payload: root};
@@ -37,10 +37,10 @@ export function rpcInvoked(): Action {
   return {type: RPC_INVOKED};
 }
 
-export function rpcSuccess(): Action {
-  return {type: RPC_SUCCESS};
+export function rpcSuccess(response: any): Action {
+  return {type: RPC_SUCCESS, payload: response};
 }
 
-export function rpcFailed(): Action {
-  return {type: RPC_FAILED};
+export function rpcFailed(err: any): Action {
+  return {type: RPC_FAILED, payload: err};
 }

@@ -1,6 +1,16 @@
 import sourceInputReducer, {initialState, State} from "./sourceInputReducer";
-import {jsonBodyChanged, methodSelected, protoLoaded, serviceSelected} from "../actions/actions";
+import {
+  jsonBodyChanged,
+  methodSelected,
+  protoLoaded,
+  rpcFailed,
+  rpcInvoked,
+  rpcSuccess,
+  serviceSelected
+} from "../actions/actions";
 import {default as protobuf} from "protobufjs";
+import {invokeGrpc} from "../side-effects/grpc";
+import {Cmd, loop} from "redux-loop";
 
 
 test('load proto', async () => {
@@ -74,3 +84,32 @@ test('json body changed, keeps track of json', () => {
 
   expect(state.jsonBody).toBe("I'm a json!")
 });
+
+test('user invokes grpc, dispatches side effect', () => {
+  const action = rpcInvoked();
+
+  const result = sourceInputReducer(initialState, action);
+
+  expect(result).toEqual(loop(initialState, Cmd.run(invokeGrpc, {
+      successActionCreator: rpcSuccess,
+      failActionCreator: rpcFailed,
+      args: []
+    })))
+});
+
+test('rpc success, sets response', () => {
+  const action = rpcSuccess("hi!");
+
+  const state = sourceInputReducer(initialState, action) as State;
+
+  expect(state.response).toContain("hi!");
+});
+
+test('rpc failure, sets response', () => {
+  const action = rpcFailed("oh noooo");
+
+  const state = sourceInputReducer(initialState, action) as State;
+
+  expect(state.response).toContain("oh noooo");
+});
+

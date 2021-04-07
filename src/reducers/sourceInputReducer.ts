@@ -3,12 +3,16 @@ import {
   JSON_BODY_CHANGED,
   METHOD_SELECTED,
   PROTO_LOADED,
-  RPC_INVOKED, rpcFailed, rpcSuccess,
+  RPC_FAILED,
+  RPC_INVOKED,
+  RPC_SUCCESS,
+  rpcFailed,
+  rpcSuccess,
   SERVICE_SELECTED
 } from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
-import {doStuff} from "../side-effects/doStuff";
+import {invokeGrpc} from "../side-effects/grpc";
 
 export const initialState = {
   stuff: "hello from a reducers",
@@ -16,7 +20,8 @@ export const initialState = {
   services: Array<Service>(),
   selectedService: undefined,
   selectedMethod: undefined,
-  jsonBody: ""
+  jsonBody: "",
+  response: undefined
 };
 
 export interface State {
@@ -26,6 +31,7 @@ export interface State {
   selectedService?: Service
   selectedMethod?: Method
   jsonBody: string
+  response?: string
 }
 
 export interface Service {
@@ -42,11 +48,19 @@ export interface Method {
 export default function (state: State = initialState, action: Action): State | Loop<State> {
 
   if (action.type === RPC_INVOKED) {
-    return loop(state, Cmd.run(doStuff, {
+    return loop(state, Cmd.run(invokeGrpc, {
       successActionCreator: rpcSuccess,
       failActionCreator: rpcFailed,
       args: []
     }));
+  }
+
+  if (action.type === RPC_SUCCESS) {
+    return {...state, response: JSON.stringify(action.payload)};
+  }
+
+  if (action.type === RPC_FAILED) {
+    return {...state, response: JSON.stringify(action.payload)};
   }
 
   if (action.type === SERVICE_SELECTED) {
