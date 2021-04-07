@@ -1,4 +1,11 @@
-import {Action, METHOD_SELECTED, PROTO_LOADED, SERVICE_SELECTED} from "../actions/actions";
+import {
+  Action,
+  JSON_BODY_CHANGED,
+  METHOD_SELECTED,
+  PROTO_LOADED,
+  RPC_INVOKED,
+  SERVICE_SELECTED
+} from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
 
 export const initialState = {
@@ -6,7 +13,8 @@ export const initialState = {
   proto: undefined,
   services: Array<Service>(),
   selectedService: undefined,
-  selectedMethod: undefined
+  selectedMethod: undefined,
+  jsonBody: ""
 };
 
 export interface State {
@@ -15,6 +23,7 @@ export interface State {
   services: Service[]
   selectedService?: Service
   selectedMethod?: Method
+  jsonBody: string
 }
 
 export interface Service {
@@ -30,14 +39,21 @@ export interface Method {
 
 export default function (state: State = initialState, action: Action): State {
 
+  if (action.type === RPC_INVOKED) {
+  }
+
   if (action.type === SERVICE_SELECTED) {
     const selectedService = state.services.find(s => s.name === action.payload);
-    return { ...state, selectedService: selectedService };
+    return {...state, selectedService: selectedService};
   }
 
   if (action.type === METHOD_SELECTED) {
     const selectedMethod = state.selectedService!.methods.find(m => m.name === action.payload);
-    return { ...state, selectedMethod: selectedMethod };
+    return {...state, selectedMethod: selectedMethod};
+  }
+
+  if (action.type === JSON_BODY_CHANGED) {
+    return {...state, jsonBody: action.payload};
   }
 
   if (action.type === PROTO_LOADED) {

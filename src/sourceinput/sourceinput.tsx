@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
-import {methodSelected, serviceSelected} from "../actions/actions";
+import {jsonBodyChanged, methodSelected, rpcInvoked, serviceSelected} from "../actions/actions";
 import {Method, Service} from "../reducers/sourceInputReducer";
 
 const SourceInput = (props: any) => {
@@ -11,6 +11,14 @@ const SourceInput = (props: any) => {
 
   function handleMethodChange(event: ChangeEvent<HTMLSelectElement>) {
     props.methodSelected(event.target.value);
+  }
+
+  function handleJsonChanged(event: ChangeEvent<HTMLTextAreaElement>) {
+    props.jsonBodyChanged(event.target.value);
+  }
+
+  function handleInvoke() {
+    props.rpcInvoked();
   }
 
   return (
@@ -32,6 +40,10 @@ const SourceInput = (props: any) => {
                 : ""
           }
         </select>
+        <br/>
+        <textarea onChange={handleJsonChanged}/>
+        <br/>
+        <button onClick={handleInvoke}>Invoke</button>
       </div>
   )
 };
@@ -41,6 +53,6 @@ const mapStateToProps = (state: any) => {
   return sourceInput;
 };
 
-const mapDispatchToProps = {serviceSelected, methodSelected};
+const mapDispatchToProps = {serviceSelected, methodSelected, jsonBodyChanged, rpcInvoked};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SourceInput);

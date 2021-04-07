@@ -1,5 +1,5 @@
 import sourceInputReducer, {initialState, State} from "./sourceInputReducer";
-import {methodSelected, protoLoaded, serviceSelected} from "../actions/actions";
+import {jsonBodyChanged, methodSelected, protoLoaded, serviceSelected} from "../actions/actions";
 import {default as protobuf} from "protobufjs";
 
 
@@ -65,4 +65,12 @@ test('method selected action switched selected method', () => {
 
   expect(state.selectedMethod!.name).toBe("work");
   expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methods[1]);
+});
+
+test('json body changed, keeps track of json', () => {
+  const action = jsonBodyChanged("I'm a json!");
+
+  const state = sourceInputReducer(initialState, action);
+
+  expect(state.jsonBody).toBe("I'm a json!")
 });
