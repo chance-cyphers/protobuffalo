@@ -1,8 +1,8 @@
 import {
-  Action,
-  JSON_BODY_CHANGED,
-  METHOD_SELECTED,
-  PROTO_LOADED,
+  Action, GENERAL_ERROR, generalError,
+  JSON_BODY_CHANGED, LOAD_PROTO_CLICKED,
+  METHOD_SELECTED, PACKAGE_DEFINITION_LOADED, packageDefinitionLoaded, PROTO_FILE_PICKED,
+  PROTO_LOADED, protoFilePicked, protoLoaded,
   RPC_FAILED,
   RPC_INVOKED,
   RPC_SUCCESS,
@@ -12,7 +12,9 @@ import {
 } from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
-import {invokeGrpc} from "../side-effects/grpc";
+import {loadPackageDefinition, invokeGrpc, loadProto} from "../side-effects/grpc";
+import {showFileDialog} from "../side-effects/loadFile";
+import {PackageDefinition} from "@grpc/proto-loader";
 
 export const initialState = {
   stuff: "hello from a reducers",
@@ -21,7 +23,9 @@ export const initialState = {
   selectedService: undefined,
   selectedMethod: undefined,
   jsonBody: "",
-  response: undefined
+  response: undefined,
+  protoPath: undefined,
+  packageDefinition: undefined
 };
 
 export interface State {
@@ -32,6 +36,8 @@ export interface State {
   selectedMethod?: Method
   jsonBody: string
   response?: string
+  protoPath?: string
+  packageDefinition?: PackageDefinition
 }
 
 export interface Service {
@@ -47,11 +53,43 @@ export interface Method {
 
 export default function (state: State = initialState, action: Action): State | Loop<State> {
 
+  if (action.type === LOAD_PROTO_CLICKED) {
+    return loop(state, Cmd.run(showFileDialog, {
+      successActionCreator: protoFilePicked,
+      failActionCreator: generalError,
+      args: []
+    }));
+  }
+
+  if (action.type === PROTO_FILE_PICKED) {
+    const loadProtoAction = Cmd.run(loadProto, {
+      successActionCreator: protoLoaded,
+      failActionCreator: generalError,
+      args: [action.payload]
+    });
+
+    const loadPackageDefAction = Cmd.run(loadPackageDefinition, {
+      successActionCreator: packageDefinitionLoaded,
+      failActionCreator: generalError,
+      args: [action.payload]
+    });
+
+    return loop({...state, protoPath: action.payload}, Cmd.list([loadProtoAction, loadPackageDefAction]));
+  }
+
+  if (action.type === PACKAGE_DEFINITION_LOADED) {
+    return {...state, packageDefinition: action.payload};
+  }
+
+  if (action.type === GENERAL_ERROR) {
+    return {...state, response: action.payload};
+  }
+
   if (action.type === RPC_INVOKED) {
     return loop(state, Cmd.run(invokeGrpc, {
       successActionCreator: rpcSuccess,
       failActionCreator: rpcFailed,
-      args: []
+      args: [state.packageDefinition!]
     }));
   }
 

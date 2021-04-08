@@ -1,4 +1,5 @@
 import {Root} from "protobufjs";
+import {PackageDefinition} from "@grpc/proto-loader";
 
 export const PROTO_LOADED = "PROTO_LOADED";
 export const SERVICE_SELECTED = "SERVICE_SELECTED";
@@ -7,6 +8,10 @@ export const JSON_BODY_CHANGED = "JSON_BODY_CHANGED";
 export const RPC_INVOKED = "RPC_INVOKED";
 export const RPC_SUCCESS = "RPC_SUCCESS";
 export const RPC_FAILED = "RPC_FAILED";
+export const LOAD_PROTO_CLICKED = "LOAD_PROTO_CLICKED";
+export const PROTO_FILE_PICKED = "PROTO_FILE_PICKED";
+export const GENERAL_ERROR = "GENERAL_ERROR";
+export const PACKAGE_DEFINITION_LOADED = "PACKAGE_DEFINITION_LOADED";
 
 export type Action =
     { type: typeof PROTO_LOADED, payload: Root }
@@ -16,6 +21,10 @@ export type Action =
     | { type: typeof RPC_INVOKED }
     | { type: typeof RPC_SUCCESS, payload: any }
     | { type: typeof RPC_FAILED, payload: any }
+    | { type: typeof LOAD_PROTO_CLICKED }
+    | { type: typeof PROTO_FILE_PICKED, payload: string }
+    | { type: typeof GENERAL_ERROR, payload: any }
+    | { type: typeof PACKAGE_DEFINITION_LOADED, payload: PackageDefinition }
 
 export function protoLoaded(root: Root): Action {
   return {type: PROTO_LOADED, payload: root};
@@ -43,4 +52,20 @@ export function rpcSuccess(response: any): Action {
 
 export function rpcFailed(err: any): Action {
   return {type: RPC_FAILED, payload: err};
+}
+
+export function loadProtoClicked(): Action {
+  return {type: LOAD_PROTO_CLICKED}
+}
+
+export function protoFilePicked(filepath: string): Action {
+  return {type: PROTO_FILE_PICKED, payload: filepath};
+}
+
+export function generalError(error: any): Action {
+  return {type: GENERAL_ERROR, payload: error};
+}
+
+export function packageDefinitionLoaded(packageDef: PackageDefinition): Action {
+  return {type: PACKAGE_DEFINITION_LOADED, payload: packageDef};
 }

@@ -1,10 +1,15 @@
+import * as protobuf from 'protobufjs';
+import {PackageDefinition} from "@grpc/proto-loader";
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
-const PROTO_PATH = __dirname + '/Users/bob/dev/protobuffalo/devtools/awesome.proto';
 
-export function invokeGrpc(): Promise<any> {
-  const packageDefinition = protoLoader.loadSync(
-      PROTO_PATH,
+export function loadProto(filepath: string): Promise<any> {
+  return protobuf.load(filepath);
+}
+
+export function loadPackageDefinition(filepath: string): Promise<PackageDefinition> {
+  return protoLoader.load(
+      filepath,
       {
         keepCase: true,
         longs: String,
@@ -12,7 +17,9 @@ export function invokeGrpc(): Promise<any> {
         defaults: true,
         oneofs: true
       });
+}
 
+export function invokeGrpc(packageDefinition: PackageDefinition): Promise<any> {
   const awesomepackage = grpc.loadPackageDefinition(packageDefinition).awesomepackage;
   const client = new awesomepackage['AwesomeService']('localhost:50051', grpc.credentials.createInsecure());
 
