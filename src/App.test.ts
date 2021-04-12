@@ -14,3 +14,7 @@ import App from './App';
 //   const wrapper = shallow(<App />);
 //   expect(wrapper.contains('Hallo')).toBe(true);
 // });
+
+test(`does nothing at all`, () => {
+  expect(1).toBe(1);
+});
