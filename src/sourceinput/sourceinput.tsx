@@ -30,7 +30,7 @@ const SourceInput = (props: any) => {
         <p>
           {props.stuff}
         </p>
-        <input type="text" value={props.serverAddress} onChange={handleServerAddrChanged} />
+        <input type="text" value={props.serverAddress} onChange={handleServerAddrChanged}/>
         <br/>
         <select onChange={handleServiceChange}>
           {props.services.map((s: Service) => {
@@ -47,9 +47,9 @@ const SourceInput = (props: any) => {
           }
         </select>
         <br/>
-        <textarea onChange={handleJsonChanged} value={props.jsonBody} />
+        <textarea onChange={handleJsonChanged} value={props.jsonBody}/>
         <br/>
-        <button onClick={handleInvoke}>Invoke</button>
+        <button onClick={handleInvoke} disabled={!props.selectedService || !props.selectedMethod}>Invoke</button>
       </div>
   )
 };
