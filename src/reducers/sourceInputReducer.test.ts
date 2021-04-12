@@ -28,6 +28,7 @@ test('load proto', async () => {
   expect(state.services[0].methods[0].requestType).toBe("AwesomeRequest");
   expect(state.services[0].methods[0].responseType).toBe("AwesomeResponse");
   expect(state.selectedService).toBe(state.services[0]);
+  expect(state.selectedMethod).toBe(state.services[0].methods[0]);
 });
 
 const carlService = {
@@ -88,13 +89,17 @@ test('json body changed, keeps track of json', () => {
 test('user invokes grpc, dispatches side effect', () => {
   const action = rpcInvoked();
 
-  const result = sourceInputReducer(initialState, action);
+  const result = sourceInputReducer(stateWithServices, action);
 
-  expect(result).toEqual(loop(initialState, Cmd.run(invokeGrpc, {
-      successActionCreator: rpcSuccess,
-      failActionCreator: rpcFailed,
-      args: []
-    })))
+  expect(result).toEqual(loop(stateWithServices, Cmd.run(invokeGrpc, {
+    successActionCreator: rpcSuccess,
+    failActionCreator: rpcFailed,
+    args: [
+      stateWithServices.packageDefinition!,
+      stateWithServices.selectedService!,
+      stateWithServices.selectedMethod!
+    ]
+  })))
 });
 
 test('rpc success, sets response', () => {

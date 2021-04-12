@@ -89,7 +89,7 @@ export default function (state: State = initialState, action: Action): State | L
     return loop(state, Cmd.run(invokeGrpc, {
       successActionCreator: rpcSuccess,
       failActionCreator: rpcFailed,
-      args: [state.packageDefinition!]
+      args: [state.packageDefinition!, state.selectedService!, state.selectedMethod!]
     }));
   }
 
@@ -140,7 +140,8 @@ export default function (state: State = initialState, action: Action): State | L
       ...state,
       proto: action.payload,
       services: services,
-      selectedService: services[0]
+      selectedService: services[0],
+      selectedMethod: services[0].methods[0]
     };
   }
 
