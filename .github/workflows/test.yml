@@ -28,6 +28,9 @@ jobs:
           yarn test
 
       - name: build
+        run: yarn run build
+
+      - name: dist
         run: yarn run dist
 
       - name: upload artifact
