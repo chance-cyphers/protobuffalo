@@ -97,7 +97,8 @@ test('user invokes grpc, dispatches side effect', () => {
     args: [
       stateWithServices.packageDefinition!,
       stateWithServices.selectedService!,
-      stateWithServices.selectedMethod!
+      stateWithServices.selectedMethod!,
+      stateWithServices.jsonBody
     ]
   })))
 });

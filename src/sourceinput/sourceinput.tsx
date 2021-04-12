@@ -41,7 +41,7 @@ const SourceInput = (props: any) => {
           }
         </select>
         <br/>
-        <textarea onChange={handleJsonChanged}/>
+        <textarea onChange={handleJsonChanged} value={props.jsonBody} />
         <br/>
         <button onClick={handleInvoke}>Invoke</button>
       </div>

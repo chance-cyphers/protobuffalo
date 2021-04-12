@@ -20,7 +20,12 @@ export function loadProto_protoLoader(filepath: string): Promise<PackageDefiniti
       });
 }
 
-export function invokeGrpc(packageDefinition: any, service: Service, method: Method): Promise<any> {
+export function invokeGrpc(
+    packageDefinition: any,
+    service: Service,
+    method: Method,
+    json: any
+): Promise<any> {
   const grpcObject = grpc.loadPackageDefinition(packageDefinition);
   const firstPackageName = Object.getOwnPropertyNames(grpcObject)[0];
   const firstPackage = grpcObject[firstPackageName];
@@ -28,7 +33,7 @@ export function invokeGrpc(packageDefinition: any, service: Service, method: Met
   const client = new firstPackage[service.name]('localhost:50051', grpc.credentials.createInsecure());
 
   return new Promise<any>((resolve, reject) => {
-    client[method.name]({awesome_field: "sahhh", just_an_average_string: "adsgf"}, (err: any, stuff: any) => {
+    client[method.name](JSON.parse(json), (err: any, stuff: any) => {
       if (err) {
         console.log(`grpc failure: ${err}`);
         reject(err);

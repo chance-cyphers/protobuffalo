@@ -22,7 +22,7 @@ export const initialState = {
   services: Array<Service>(),
   selectedService: undefined,
   selectedMethod: undefined,
-  jsonBody: "",
+  jsonBody: '{"awesome_field": "sahhh", "just_an_average_string": "adsgf"}',
   response: undefined,
   protoPath: undefined,
   packageDefinition: undefined
@@ -89,7 +89,12 @@ export default function (state: State = initialState, action: Action): State | L
     return loop(state, Cmd.run(invokeGrpc, {
       successActionCreator: rpcSuccess,
       failActionCreator: rpcFailed,
-      args: [state.packageDefinition!, state.selectedService!, state.selectedMethod!]
+      args: [
+        state.packageDefinition!,
+        state.selectedService!,
+        state.selectedMethod!,
+        state.jsonBody
+      ]
     }));
   }
 
