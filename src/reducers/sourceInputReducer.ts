@@ -12,7 +12,7 @@ import {
 } from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
-import {loadPackageDefinition, invokeGrpc, loadProto} from "../side-effects/grpc";
+import {loadProto_protoLoader, invokeGrpc, loadProto_protobufjs} from "../side-effects/grpc";
 import {showFileDialog} from "../side-effects/loadFile";
 import {PackageDefinition} from "@grpc/proto-loader";
 
@@ -62,13 +62,13 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === PROTO_FILE_PICKED) {
-    const loadProtoAction = Cmd.run(loadProto, {
+    const loadProtoAction = Cmd.run(loadProto_protobufjs, {
       successActionCreator: protoLoaded,
       failActionCreator: generalError,
       args: [action.payload]
     });
 
-    const loadPackageDefAction = Cmd.run(loadPackageDefinition, {
+    const loadPackageDefAction = Cmd.run(loadProto_protoLoader, {
       successActionCreator: packageDefinitionLoaded,
       failActionCreator: generalError,
       args: [action.payload]

@@ -3,11 +3,11 @@ import {PackageDefinition} from "@grpc/proto-loader";
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
-export function loadProto(filepath: string): Promise<any> {
+export function loadProto_protobufjs(filepath: string): Promise<any> {
   return protobuf.load(filepath);
 }
 
-export function loadPackageDefinition(filepath: string): Promise<PackageDefinition> {
+export function loadProto_protoLoader(filepath: string): Promise<PackageDefinition> {
   return protoLoader.load(
       filepath,
       {
@@ -19,9 +19,12 @@ export function loadPackageDefinition(filepath: string): Promise<PackageDefiniti
       });
 }
 
-export function invokeGrpc(packageDefinition: PackageDefinition): Promise<any> {
-  const awesomepackage = grpc.loadPackageDefinition(packageDefinition).awesomepackage;
-  const client = new awesomepackage['AwesomeService']('localhost:50051', grpc.credentials.createInsecure());
+export function invokeGrpc(packageDefinition: any): Promise<any> {
+  const grpcObject = grpc.loadPackageDefinition(packageDefinition);
+  const firstPackageName = Object.getOwnPropertyNames(grpcObject)[0];
+  const firstPackage = grpcObject[firstPackageName];
+
+  const client = new firstPackage['AwesomeService']('localhost:50051', grpc.credentials.createInsecure());
 
   return new Promise<any>((resolve, reject) => {
     client.DoThings({awesome_field: "sahhh", just_an_average_string: "adsgf"}, (err: any, stuff: any) => {
