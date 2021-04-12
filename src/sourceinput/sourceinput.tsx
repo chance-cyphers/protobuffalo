@@ -50,6 +50,8 @@ const SourceInput = (props: any) => {
         <textarea onChange={handleJsonChanged} value={props.jsonBody}/>
         <br/>
         <button onClick={handleInvoke} disabled={!props.selectedService || !props.selectedMethod}>Invoke</button>
+        <p>Response: </p>
+        <p>{props.response}</p>
       </div>
   )
 };
