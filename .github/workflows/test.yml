@@ -28,16 +28,13 @@ jobs:
           yarn test
 
       - name: build
-        run: |
-          mkdir -p output
-          echo "hellloooo" > output/release.txt
-          ls
+        run: yarn run dist
 
       - name: upload artifact
         uses: actions/upload-artifact@v1
         with:
           name: my-artifact
-          path: output/release.txt
+          path: dist
 
 
 # Failing beacuse virtual framebuffer not installed
