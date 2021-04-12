@@ -24,13 +24,14 @@ export function invokeGrpc(
     packageDefinition: any,
     service: Service,
     method: Method,
-    json: any
+    json: any,
+    serverAddr: string
 ): Promise<any> {
   const grpcObject = grpc.loadPackageDefinition(packageDefinition);
   const firstPackageName = Object.getOwnPropertyNames(grpcObject)[0];
   const firstPackage = grpcObject[firstPackageName];
 
-  const client = new firstPackage[service.name]('localhost:50051', grpc.credentials.createInsecure());
+  const client = new firstPackage[service.name](serverAddr, grpc.credentials.createInsecure());
 
   return new Promise<any>((resolve, reject) => {
     client[method.name](JSON.parse(json), (err: any, stuff: any) => {

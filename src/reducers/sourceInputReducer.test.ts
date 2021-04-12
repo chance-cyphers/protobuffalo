@@ -6,6 +6,7 @@ import {
   rpcFailed,
   rpcInvoked,
   rpcSuccess,
+  serverAddressChanged,
   serviceSelected
 } from "../actions/actions";
 import {default as protobuf} from "protobufjs";
@@ -98,7 +99,8 @@ test('user invokes grpc, dispatches side effect', () => {
       stateWithServices.packageDefinition!,
       stateWithServices.selectedService!,
       stateWithServices.selectedMethod!,
-      stateWithServices.jsonBody
+      stateWithServices.jsonBody,
+      stateWithServices.serverAddress
     ]
   })))
 });
@@ -119,3 +121,10 @@ test('rpc failure, sets response', () => {
   expect(state.response).toContain("oh noooo");
 });
 
+test('server address changed updates server address', () => {
+  const action = serverAddressChanged("localhost or something");
+
+  const state = sourceInputReducer(initialState, action) as State;
+
+  expect(state.serverAddress).toBe("localhost or something");
+});

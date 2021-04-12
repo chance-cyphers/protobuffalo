@@ -7,7 +7,7 @@ import {
   RPC_INVOKED,
   RPC_SUCCESS,
   rpcFailed,
-  rpcSuccess,
+  rpcSuccess, SERVER_ADDRESS_CHANGED,
   SERVICE_SELECTED
 } from "../actions/actions";
 import {NamespaceBase, Root} from "protobufjs";
@@ -25,7 +25,8 @@ export const initialState = {
   jsonBody: '{"awesome_field": "sahhh", "just_an_average_string": "adsgf"}',
   response: undefined,
   protoPath: undefined,
-  packageDefinition: undefined
+  packageDefinition: undefined,
+  serverAddress: "localhost:50051"
 };
 
 export interface State {
@@ -37,7 +38,8 @@ export interface State {
   jsonBody: string
   response?: string
   protoPath?: string
-  packageDefinition?: PackageDefinition
+  packageDefinition?: PackageDefinition,
+  serverAddress: string
 }
 
 export interface Service {
@@ -52,6 +54,10 @@ export interface Method {
 }
 
 export default function (state: State = initialState, action: Action): State | Loop<State> {
+
+  if (action.type === SERVER_ADDRESS_CHANGED) {
+    return {...state, serverAddress: action.payload};
+  }
 
   if (action.type === LOAD_PROTO_CLICKED) {
     return loop(state, Cmd.run(showFileDialog, {
@@ -93,7 +99,8 @@ export default function (state: State = initialState, action: Action): State | L
         state.packageDefinition!,
         state.selectedService!,
         state.selectedMethod!,
-        state.jsonBody
+        state.jsonBody,
+        state.serverAddress
       ]
     }));
   }

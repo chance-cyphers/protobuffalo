@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
-import {jsonBodyChanged, methodSelected, rpcInvoked, serviceSelected} from "../actions/actions";
+import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../actions/actions";
 import {Method, Service} from "../reducers/sourceInputReducer";
 
 const SourceInput = (props: any) => {
@@ -21,11 +21,17 @@ const SourceInput = (props: any) => {
     props.rpcInvoked();
   }
 
+  function handleServerAddrChanged(event: ChangeEvent<HTMLInputElement>) {
+    props.serverAddressChanged(event.target.value);
+  }
+
   return (
       <div>
         <p>
           {props.stuff}
         </p>
+        <input type="text" value={props.serverAddress} onChange={handleServerAddrChanged} />
+        <br/>
         <select onChange={handleServiceChange}>
           {props.services.map((s: Service) => {
             return (<option key={s.name}>{s.name}</option>)
@@ -53,6 +59,6 @@ const mapStateToProps = (state: any) => {
   return sourceInput;
 };
 
-const mapDispatchToProps = {serviceSelected, methodSelected, jsonBodyChanged, rpcInvoked};
+const mapDispatchToProps = {serviceSelected, methodSelected, jsonBodyChanged, rpcInvoked, serverAddressChanged};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SourceInput);
