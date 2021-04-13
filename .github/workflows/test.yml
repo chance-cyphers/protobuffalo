@@ -32,12 +32,12 @@ jobs:
 #
 #      - name: dist
 #        run: yarn run dist
-
-      - name: upload artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: my-artifact
-          path: dist
+#
+#      - name: upload artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: my-artifact
+#          path: dist
 
 
 # Failing beacuse virtual framebuffer not installed
