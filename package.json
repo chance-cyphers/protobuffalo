@@ -9,6 +9,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "electron-devtools-installer": "^3.1.1",
     "electron-is-dev": "^1.2.0",
     "protobufjs": "^6.9.0",
     "react": "^16.13.1",
@@ -51,7 +52,6 @@
     "concurrently": "^5.2.0",
     "electron": "^8.2.3",
     "electron-builder": "^22.5.1",
-    "electron-devtools-installer": "^3.1.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "wait-on": "^4.0.2"
