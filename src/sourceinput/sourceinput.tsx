@@ -1,7 +1,8 @@
 import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
 import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../actions/actions";
-import {Method, BuffaloService} from "../reducers/sourceInputReducer";
+import {BuffaloService} from "../reducers/sourceInputReducer";
+import {Method} from "protobufjs";
 
 const SourceInput = (props: any) => {
 

@@ -1,6 +1,7 @@
 import * as protobuf from 'protobufjs';
 import {PackageDefinition} from "@grpc/proto-loader";
-import {Method, BuffaloService} from "../reducers/sourceInputReducer";
+import {BuffaloService} from "../reducers/sourceInputReducer";
+import {Method} from "protobufjs";
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 

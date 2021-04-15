@@ -19,7 +19,7 @@ import {
   SERVER_ADDRESS_CHANGED,
   SERVICE_SELECTED
 } from "../actions/actions";
-import {Namespace, ReflectionObject, Root, Service} from "protobufjs";
+import {Method, Namespace, ReflectionObject, Root, Service} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
 import {invokeGrpc, loadProto_protobufjs, loadProto_protoLoader} from "../side-effects/grpc";
 import {showFileDialog} from "../side-effects/loadFile";
@@ -56,11 +56,11 @@ export interface BuffaloService {
   methods: Method[]
 }
 
-export interface Method {
-  name: string
-  requestType: string
-  responseType: string
-}
+// export interface Method {
+//   name: string
+//   requestType: string
+//   responseType: string
+// }
 
 export default function (state: State = initialState, action: Action): State | Loop<State> {
 
@@ -139,17 +139,9 @@ export default function (state: State = initialState, action: Action): State | L
   if (action.type === PROTO_LOADED) {
     const services = getServices(action.payload)
         .map(s => {
-          const methods = s.methodsArray.map(m => {
-            return {
-              name: m.name,
-              requestType: m.requestType,
-              responseType: m.responseType
-            }
-          });
-
           return {
             name: s.name,
-            methods: methods
+            methods: s.methodsArray
           };
         });
 

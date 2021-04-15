@@ -9,7 +9,7 @@ import {
   serverAddressChanged,
   serviceSelected
 } from "../actions/actions";
-import {default as protobuf} from "protobufjs";
+import {default as protobuf, Method} from "protobufjs";
 import {invokeGrpc} from "../side-effects/grpc";
 import {Cmd, loop} from "redux-loop";
 
@@ -46,32 +46,22 @@ test('load proto handles nested packages', async () => {
 
 const carlService = {
   name: "carl",
-  methods: [{
-    name: "chores",
-    requestType: "effort",
-    responseType: "cleanStuff"
-  }, {
-    name: "work",
-    requestType: "effort",
-    responseType: "money"
-  }]
+  methods: [
+    new Method("chores", "", "effort", "cleanStuff"),
+    new Method("work", "", "effort", "money")
+  ]
 };
 
 const stateWithServices: State = {
   ...initialState,
   services: [carlService, {
-    name: "bob", methods: [{
-      name: "louch",
-      requestType: "couch",
-      responseType: "you"
-    }, {
-      name: "drive",
-      requestType: "keys",
-      responseType: "co2"
-    }]
+    name: "bob", methods: [
+      new Method("louch", "", "couch", "you"),
+      new Method("drive", "", "keys", "co2")]
   }],
   selectedService: carlService
 };
+
 
 test('service selected action switches selected service', () => {
   const action = serviceSelected("bob");
