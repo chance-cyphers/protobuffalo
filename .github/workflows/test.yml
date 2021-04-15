@@ -26,20 +26,3 @@ jobs:
       - name: yarn test
         run: |
           yarn test
-
-#      - name: build
-#        run: yarn run build
-#
-#      - name: dist
-#        run: yarn run dist
-#
-#      - name: upload artifact
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: my-artifact
-#          path: dist
-
-
-# Failing beacuse virtual framebuffer not installed
-#          yarn build-e2e
-#          yarn test-e2e
