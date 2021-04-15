@@ -9,7 +9,7 @@ import {
   serverAddressChanged,
   serviceSelected
 } from "../actions/actions";
-import {default as protobuf, Method} from "protobufjs";
+import {default as protobuf, Method, Service} from "protobufjs";
 import {invokeGrpc} from "../side-effects/grpc";
 import {Cmd, loop} from "redux-loop";
 
@@ -24,12 +24,12 @@ test('load proto', async () => {
   expect(state.proto).toEqual(root);
   expect(state.services.length).toBe(1);
   expect(state.services[0].name).toBe("AwesomeService");
-  expect(state.services[0].methods.length).toBe(2);
-  expect(state.services[0].methods[0].name).toBe("DoThings");
-  expect(state.services[0].methods[0].requestType).toBe("AwesomeRequest");
-  expect(state.services[0].methods[0].responseType).toBe("AwesomeResponse");
+  expect(state.services[0].methodsArray.length).toBe(2);
+  expect(state.services[0].methodsArray[0].name).toBe("DoThings");
+  expect(state.services[0].methodsArray[0].requestType).toBe("AwesomeRequest");
+  expect(state.services[0].methodsArray[0].responseType).toBe("AwesomeResponse");
   expect(state.selectedService).toBe(state.services[0]);
-  expect(state.selectedMethod).toBe(state.services[0].methods[0]);
+  expect(state.selectedMethod).toBe(state.services[0].methodsArray[0]);
 });
 
 test('load proto handles nested packages', async () => {
@@ -44,24 +44,20 @@ test('load proto handles nested packages', async () => {
 });
 
 
-const carlService = {
-  name: "carl",
-  methods: [
-    new Method("chores", "", "effort", "cleanStuff"),
-    new Method("work", "", "effort", "money")
-  ]
-};
+const carlService = new Service("carl")
+    .add(new Method("chores", "", "effort", "cleanStuff"))
+    .add(new Method("work", "", "effort", "money")) as Service;
 
 const stateWithServices: State = {
   ...initialState,
-  services: [carlService, {
-    name: "bob", methods: [
-      new Method("louch", "", "couch", "you"),
-      new Method("drive", "", "keys", "co2")]
-  }],
+  services: [
+    carlService,
+    new Service("bob")
+        .add(new Method("louch", "", "couch", "you"))
+        .add(new Method("drive", "", "keys", "co2")) as Service
+  ],
   selectedService: carlService
 };
-
 
 test('service selected action switches selected service', () => {
   const action = serviceSelected("bob");
@@ -78,7 +74,7 @@ test('method selected action switched selected method', () => {
   const state = sourceInputReducer(stateWithServices, action) as State;
 
   expect(state.selectedMethod!.name).toBe("work");
-  expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methods[1]);
+  expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methodsArray[1]);
 });
 
 test('json body changed, keeps track of json', () => {

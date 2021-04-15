@@ -1,7 +1,6 @@
 import * as protobuf from 'protobufjs';
 import {PackageDefinition} from "@grpc/proto-loader";
-import {BuffaloService} from "../reducers/sourceInputReducer";
-import {Method} from "protobufjs";
+import {Method, Service} from "protobufjs";
 const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 
@@ -23,7 +22,7 @@ export function loadProto_protoLoader(filepath: string): Promise<PackageDefiniti
 
 export function invokeGrpc(
     packageDefinition: any,
-    service: BuffaloService,
+    service: Service,
     method: Method,
     json: any,
     serverAddr: string

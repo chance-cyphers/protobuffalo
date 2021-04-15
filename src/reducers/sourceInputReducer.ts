@@ -28,7 +28,7 @@ import {PackageDefinition} from "@grpc/proto-loader";
 export const initialState = {
   stuff: "hello from a reducers",
   proto: undefined,
-  services: Array<BuffaloService>(),
+  services: Array<Service>(),
   selectedService: undefined,
   selectedMethod: undefined,
   jsonBody: '{"awesome_field": "sahhh", "just_an_average_string": "adsgf"}',
@@ -41,8 +41,8 @@ export const initialState = {
 export interface State {
   stuff: string
   proto?: Root
-  services: BuffaloService[]
-  selectedService?: BuffaloService
+  services: Service[]
+  selectedService?: Service
   selectedMethod?: Method
   jsonBody: string
   response?: string
@@ -50,17 +50,6 @@ export interface State {
   packageDefinition?: PackageDefinition,
   serverAddress: string
 }
-
-export interface BuffaloService {
-  name: string
-  methods: Method[]
-}
-
-// export interface Method {
-//   name: string
-//   requestType: string
-//   responseType: string
-// }
 
 export default function (state: State = initialState, action: Action): State | Loop<State> {
 
@@ -128,7 +117,7 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === METHOD_SELECTED) {
-    const selectedMethod = state.selectedService!.methods.find(m => m.name === action.payload);
+    const selectedMethod = state.selectedService!.methodsArray.find(m => m.name === action.payload);
     return {...state, selectedMethod: selectedMethod};
   }
 
@@ -137,20 +126,14 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === PROTO_LOADED) {
-    const services = getServices(action.payload)
-        .map(s => {
-          return {
-            name: s.name,
-            methods: s.methodsArray
-          };
-        });
+    const services = getServices(action.payload);
 
     return {
       ...state,
       proto: action.payload,
       services: services,
       selectedService: services[0],
-      selectedMethod: services[0].methods[0]
+      selectedMethod: services[0].methodsArray[0]
     };
   }
 
