@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
 import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../actions/actions";
-import {Method, Service} from "../reducers/sourceInputReducer";
+import {Method, BuffaloService} from "../reducers/sourceInputReducer";
 
 const SourceInput = (props: any) => {
 
@@ -33,7 +33,7 @@ const SourceInput = (props: any) => {
         <input type="text" value={props.serverAddress} onChange={handleServerAddrChanged}/>
         <br/>
         <select onChange={handleServiceChange}>
-          {props.services.map((s: Service) => {
+          {props.services.map((s: BuffaloService) => {
             return (<option key={s.name}>{s.name}</option>)
           })}
         </select>

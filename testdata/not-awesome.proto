@@ -1,0 +1,16 @@
+package not.awesome.package;
+
+message NotAwesomeRequest {
+    optional string not_awesome_field = 1;
+}
+
+message NotAwesomeResponse {
+    optional string answer_to_stuff = 1;
+}
+
+service NotAwesomeService {
+
+    rpc DoThings(NotAwesomeRequest) returns (NotAwesomeResponse) {}
+    rpc DoMoreThings(NotAwesomeRequest) returns (NotAwesomeResponse) {}
+
+}

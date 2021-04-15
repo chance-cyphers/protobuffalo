@@ -1,25 +1,34 @@
 import {
-  Action, GENERAL_ERROR, generalError,
-  JSON_BODY_CHANGED, LOAD_PROTO_CLICKED,
-  METHOD_SELECTED, PACKAGE_DEFINITION_LOADED, packageDefinitionLoaded, PROTO_FILE_PICKED,
-  PROTO_LOADED, protoFilePicked, protoLoaded,
+  Action,
+  GENERAL_ERROR,
+  generalError,
+  JSON_BODY_CHANGED,
+  LOAD_PROTO_CLICKED,
+  METHOD_SELECTED,
+  PACKAGE_DEFINITION_LOADED,
+  packageDefinitionLoaded,
+  PROTO_FILE_PICKED,
+  PROTO_LOADED,
+  protoFilePicked,
+  protoLoaded,
   RPC_FAILED,
   RPC_INVOKED,
   RPC_SUCCESS,
   rpcFailed,
-  rpcSuccess, SERVER_ADDRESS_CHANGED,
+  rpcSuccess,
+  SERVER_ADDRESS_CHANGED,
   SERVICE_SELECTED
 } from "../actions/actions";
-import {NamespaceBase, Root} from "protobufjs";
+import {Namespace, ReflectionObject, Root, Service} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
-import {loadProto_protoLoader, invokeGrpc, loadProto_protobufjs} from "../side-effects/grpc";
+import {invokeGrpc, loadProto_protobufjs, loadProto_protoLoader} from "../side-effects/grpc";
 import {showFileDialog} from "../side-effects/loadFile";
 import {PackageDefinition} from "@grpc/proto-loader";
 
 export const initialState = {
   stuff: "hello from a reducers",
   proto: undefined,
-  services: Array<Service>(),
+  services: Array<BuffaloService>(),
   selectedService: undefined,
   selectedMethod: undefined,
   jsonBody: '{"awesome_field": "sahhh", "just_an_average_string": "adsgf"}',
@@ -32,8 +41,8 @@ export const initialState = {
 export interface State {
   stuff: string
   proto?: Root
-  services: Service[]
-  selectedService?: Service
+  services: BuffaloService[]
+  selectedService?: BuffaloService
   selectedMethod?: Method
   jsonBody: string
   response?: string
@@ -42,7 +51,7 @@ export interface State {
   serverAddress: string
 }
 
-export interface Service {
+export interface BuffaloService {
   name: string
   methods: Method[]
 }
@@ -128,25 +137,21 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === PROTO_LOADED) {
-    const firstPackage = action.payload.nestedArray[0] as NamespaceBase;
+    const services = getServices(action.payload)
+        .map(s => {
+          const methods = s.methodsArray.map(m => {
+            return {
+              name: m.name,
+              requestType: m.requestType,
+              responseType: m.responseType
+            }
+          });
 
-    const serviceNames = Object.getOwnPropertyNames(firstPackage.nested).filter(item => {
-      try {
-        firstPackage.lookupService(item);
-        return true
-      } catch (e) {
-        return false;
-      }
-    });
-
-    const services = serviceNames.map(serviceName => {
-      const service = firstPackage.lookupService(serviceName);
-
-      return {
-        name: serviceName,
-        methods: [...service.methodsArray]
-      };
-    });
+          return {
+            name: s.name,
+            methods: methods
+          };
+        });
 
     return {
       ...state,
@@ -158,4 +163,16 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   return state;
+}
+
+function getServices(current: ReflectionObject): Service[] {
+  if (current instanceof Service) {
+    return [current];
+  }
+
+  if (current instanceof Namespace) {
+    return current.nestedArray.flatMap(getServices);
+  }
+
+  return [];
 }

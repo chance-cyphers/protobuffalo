@@ -32,6 +32,18 @@ test('load proto', async () => {
   expect(state.selectedMethod).toBe(state.services[0].methods[0]);
 });
 
+test('load proto handles nested packages', async () => {
+  const root = await protobuf.load(__dirname + '/../../testdata/not-awesome.proto');
+
+  const action = protoLoaded(root);
+
+  const state = sourceInputReducer(initialState, action) as State;
+
+  expect(state.services.length).toBe(1);
+  expect(state.services[0].name).toBe("NotAwesomeService");
+});
+
+
 const carlService = {
   name: "carl",
   methods: [{
