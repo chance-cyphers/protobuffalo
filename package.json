@@ -20,6 +20,9 @@
     "redux-loop": "^6.1.0",
     "typescript": "^4.2.3"
   },
+  "build": {
+    "icon": "build/logo512.png"
+  },
   "scripts": {
     "start": "rescripts start",
     "build": "rescripts build",
