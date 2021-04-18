@@ -2,6 +2,7 @@ import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
 import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../actions/actions";
 import {Method, Service} from "protobufjs";
+import JsonInput from "../components/jsoninput/jsoninput";
 
 const SourceInput = (props: any) => {
 
@@ -11,10 +12,6 @@ const SourceInput = (props: any) => {
 
   function handleMethodChange(event: ChangeEvent<HTMLSelectElement>) {
     props.methodSelected(event.target.value);
-  }
-
-  function handleJsonChanged(event: ChangeEvent<HTMLTextAreaElement>) {
-    props.jsonBodyChanged(event.target.value);
   }
 
   function handleInvoke() {
@@ -47,8 +44,7 @@ const SourceInput = (props: any) => {
           }
         </select>
         <br/>
-        <textarea onChange={handleJsonChanged} value={props.jsonBody}/>
-        <br/>
+        <JsonInput/>
         <button onClick={handleInvoke} disabled={!props.selectedService || !props.selectedMethod}>Invoke</button>
         <p>Response: </p>
         <p>{props.response}</p>
