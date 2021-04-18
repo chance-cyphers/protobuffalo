@@ -5,5 +5,5 @@ import {install} from 'redux-loop';
 export default createStore(
     rootReducer,
     {},
-    compose(install(), window.devToolsExtension())
+    compose(install(), window.window.__REDUX_DEVTOOLS_EXTENSION__())
 );
