@@ -19,24 +19,10 @@ jobs:
         with:
           node-version: 13
 
-  test:
-    needs: setup
-    runs-on: macos-latest
-
-    strategy:
-      matrix:
-        os: [macos-10.14, windows-2019, ubuntu-18.04]
-
-    steps:
       - name: Run Tests
         run: |
           yarn test
 
-  release:
-    needs: setup
-    runs-on: macos-latest
-
-    steps:
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
