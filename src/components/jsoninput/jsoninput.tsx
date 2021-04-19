@@ -13,14 +13,18 @@ const JsonInput = (props: any) => {
   function makeTabsWork(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.keyCode === 9) {
       event.preventDefault();
-      console.log(`loc: ${event.which}`);
-
     }
   }
 
   return (
       <div>
-        <textarea onChange={handleJsonChanged} onKeyDown={makeTabsWork} value={props.jsonBody}/>
+        <textarea
+            onChange={handleJsonChanged}
+            onKeyDown={makeTabsWork}
+            value={props.jsonBody}
+            rows={20}
+            cols={60}
+        />
       </div>
   )
 

@@ -30,7 +30,7 @@ export const initialState = {
   services: Array<Service>(),
   selectedService: undefined,
   selectedMethod: undefined,
-  jsonBody: '{"awesome_field": "sahhh", "just_an_average_string": "adsgf"}',
+  jsonBody: '{\n  "awesome_field": "sahhh",\n  "just_an_average_string": "adsgf"\n}',
   response: undefined,
   protoPath: undefined,
   packageDefinition: undefined,
@@ -120,12 +120,7 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === JSON_BODY_CHANGED) {
-    try {
-      const formatted = JSON.stringify(JSON.parse(action.payload), undefined, 2);
-      return {...state, jsonBody: formatted};
-    } catch (e) {
-      return {...state, jsonBody: action.payload};
-    }
+    return {...state, jsonBody: action.payload};
   }
 
   if (action.type === PROTO_LOADED) {
