@@ -1,4 +1,4 @@
 import { combineReducers } from "redux-loop";
-import sourceInput from "./sourceInputReducer";
+import proto from "./protoReducer";
 
-export default combineReducers({sourceInput})
+export default combineReducers({proto})

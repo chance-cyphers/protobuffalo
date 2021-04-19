@@ -1,10 +1,10 @@
 import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
-import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../actions/actions";
+import {jsonBodyChanged, methodSelected, rpcInvoked, serverAddressChanged, serviceSelected} from "../../actions/actions";
 import {Method, Service} from "protobufjs";
-import JsonInput from "../components/jsoninput/jsoninput";
+import JsonInput from "../jsoninput/jsoninput";
 
-const SourceInput = (props: any) => {
+const ProtoView = (props: any) => {
 
   function handleServiceChange(event: ChangeEvent<HTMLSelectElement>) {
     props.serviceSelected(event.target.value);
@@ -24,9 +24,6 @@ const SourceInput = (props: any) => {
 
   return (
       <div>
-        <p>
-          {props.stuff}
-        </p>
         <input type="text" value={props.serverAddress} onChange={handleServerAddrChanged}/>
         <br/>
         <select onChange={handleServiceChange}>
@@ -53,10 +50,10 @@ const SourceInput = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const {sourceInput} = state;
-  return sourceInput;
+  const {proto} = state;
+  return proto;
 };
 
 const mapDispatchToProps = {serviceSelected, methodSelected, jsonBodyChanged, rpcInvoked, serverAddressChanged};
 
-export default connect(mapStateToProps, mapDispatchToProps)(SourceInput);
+export default connect(mapStateToProps, mapDispatchToProps)(ProtoView);

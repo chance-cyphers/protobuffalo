@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import SourceInput from "./sourceinput/sourceinput";
-import {loadProtoClicked, protoLoaded} from "./actions/actions";
+import ProtoView from "./components/protoview/protoview";
+import {loadProtoClicked} from "./actions/actions";
 import {connect} from "react-redux";
 
 function App(props: any) {
@@ -15,10 +15,10 @@ function App(props: any) {
             <header className="App-header">
                 Hallo
                 <button onClick={handleClick}>Load Proto</button>
-                <SourceInput/>
+                <ProtoView/>
             </header>
         </div>
     );
 }
 
-export default connect(null, { protoLoaded, loadProtoClicked })(App);
+export default connect(null, { loadProtoClicked })(App);

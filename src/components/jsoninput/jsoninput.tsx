@@ -27,8 +27,8 @@ const JsonInput = (props: any) => {
 };
 
 const mapStateToProps = (state: any) => {
-  const {sourceInput} = state;
-  return sourceInput;
+  const {proto} = state;
+  return proto;
 };
 
 const mapDispatchToProps = {jsonBodyChanged};

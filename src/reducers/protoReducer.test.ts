@@ -1,4 +1,4 @@
-import sourceInputReducer, {initialState, State} from "./sourceInputReducer";
+import protoReducer, {initialState, State} from "./protoReducer";
 import {
   jsonBodyChanged,
   methodSelected,
@@ -19,7 +19,7 @@ test('load proto', async () => {
 
   const action = protoLoaded(root);
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.proto).toEqual(root);
   expect(state.services.length).toBe(1);
@@ -37,7 +37,7 @@ test('load proto handles nested packages', async () => {
 
   const action = protoLoaded(root);
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.services.length).toBe(1);
   expect(state.services[0].name).toBe("NotAwesomeService");
@@ -62,7 +62,7 @@ const stateWithServices: State = {
 test('service selected action switches selected service', () => {
   const action = serviceSelected("bob");
 
-  const state = sourceInputReducer(stateWithServices, action) as State;
+  const state = protoReducer(stateWithServices, action) as State;
 
   expect(state.selectedService!.name).toBe("bob");
   expect(state.selectedService!).toBe(state.services[1]);
@@ -71,7 +71,7 @@ test('service selected action switches selected service', () => {
 test('method selected action switched selected method', () => {
   const action = methodSelected("work");
 
-  const state = sourceInputReducer(stateWithServices, action) as State;
+  const state = protoReducer(stateWithServices, action) as State;
 
   expect(state.selectedMethod!.name).toBe("work");
   expect(state.selectedMethod).toBe(stateWithServices.selectedService!.methodsArray[1]);
@@ -80,7 +80,7 @@ test('method selected action switched selected method', () => {
 test('json body changed, keeps track of json', () => {
   const action = jsonBodyChanged("I'm a json!");
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.jsonBody).toBe("I'm a json!")
 });
@@ -88,7 +88,7 @@ test('json body changed, keeps track of json', () => {
 test('user invokes grpc, dispatches side effect', () => {
   const action = rpcInvoked();
 
-  const result = sourceInputReducer(stateWithServices, action);
+  const result = protoReducer(stateWithServices, action);
 
   expect(result).toEqual(loop(stateWithServices, Cmd.run(invokeGrpc, {
     successActionCreator: rpcSuccess,
@@ -106,7 +106,7 @@ test('user invokes grpc, dispatches side effect', () => {
 test('rpc success, sets response', () => {
   const action = rpcSuccess("hi!");
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.response).toContain("hi!");
 });
@@ -114,7 +114,7 @@ test('rpc success, sets response', () => {
 test('rpc failure, sets response', () => {
   const action = rpcFailed("oh noooo");
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.response).toContain("oh noooo");
 });
@@ -122,7 +122,7 @@ test('rpc failure, sets response', () => {
 test('server address changed updates server address', () => {
   const action = serverAddressChanged("localhost or something");
 
-  const state = sourceInputReducer(initialState, action) as State;
+  const state = protoReducer(initialState, action) as State;
 
   expect(state.serverAddress).toBe("localhost or something");
 });

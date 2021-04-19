@@ -26,7 +26,6 @@ import {showFileDialog} from "../side-effects/loadFile";
 import {PackageDefinition} from "@grpc/proto-loader";
 
 export const initialState = {
-  stuff: "hello from a reducers",
   proto: undefined,
   services: Array<Service>(),
   selectedService: undefined,
@@ -39,7 +38,6 @@ export const initialState = {
 };
 
 export interface State {
-  stuff: string
   proto?: Root
   services: Service[]
   selectedService?: Service
@@ -122,7 +120,12 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === JSON_BODY_CHANGED) {
-    return {...state, jsonBody: action.payload};
+    try {
+      const formatted = JSON.stringify(JSON.parse(action.payload), undefined, 2);
+      return {...state, jsonBody: formatted};
+    } catch (e) {
+      return {...state, jsonBody: action.payload};
+    }
   }
 
   if (action.type === PROTO_LOADED) {
