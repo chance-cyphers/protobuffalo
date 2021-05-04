@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux';
 import store from './store';
+import 'fontsource-roboto';
 
 ReactDOM.render(
     <Provider store={store}>
