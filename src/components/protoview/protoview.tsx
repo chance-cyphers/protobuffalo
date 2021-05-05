@@ -8,8 +8,16 @@ import {
   serviceSelected
 } from "../../actions/actions";
 import {Method, Service} from "protobufjs";
-import JsonInput from "../jsoninput/jsoninput";
-import {Divider, Grid, InputLabel, makeStyles, MenuItem, Select, TextField} from "@material-ui/core";
+import {
+  Divider,
+  Grid,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+  TextField,
+} from "@material-ui/core";
+import TabsView from "../tabsview/tabsview";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -83,20 +91,7 @@ const ProtoView = (props: any) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Divider/>
-        </Grid>
-
-        <Grid item xs={3}>TLS</Grid>
-        <Grid item xs={3}>Request (form)</Grid>
-        <Grid item xs={3}>Request (JSON)</Grid>
-        <Grid item xs={3}>Response</Grid>
-
-        <Grid item xs={12}>
-          <Divider/>
-        </Grid>
-
-        <Grid item xs={12}>
-          <JsonInput/>
+          <TabsView/>
         </Grid>
 
         <button onClick={handleInvoke} disabled={!props.selectedService || !props.selectedMethod}>Invoke</button>

@@ -3,7 +3,6 @@ import './App.css';
 import ProtoView from "./components/protoview/protoview";
 import {loadProtoClicked} from "./actions/actions";
 import {createMuiTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
-import Box from "@material-ui/core/Box";
 import {connect} from "react-redux";
 
 const theme = createMuiTheme({
@@ -57,12 +56,6 @@ function App(props: any) {
   return (
       <ThemeProvider theme={theme}>
         <Grid container className={classes.root}>
-
-          <Grid item xs={12}>
-            <Box bgcolor="primary.main" className={classes.title}>
-              Proto Buffalo
-            </Box>
-          </Grid>
 
           <Grid item xs={3}>
             <div className={classes.protoList}>
