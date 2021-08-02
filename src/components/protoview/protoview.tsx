@@ -15,7 +15,6 @@ import {
 } from "@material-ui/core";
 import TabsView from "../tabsview/tabsview";
 import Dropdown from "./dropdown/dropdown";
-import Box from "@material-ui/core/Box";
 
 
 const useStyles = makeStyles((theme) => ({
