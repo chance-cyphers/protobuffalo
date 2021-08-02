@@ -9,21 +9,26 @@ import {
 } from "../../actions/actions";
 import {Method, Service} from "protobufjs";
 import {
-  Divider,
   Grid,
-  InputLabel,
   makeStyles,
-  MenuItem,
-  Select,
   TextField,
 } from "@material-ui/core";
 import TabsView from "../tabsview/tabsview";
+import Dropdown from "./dropdown/dropdown";
+import Box from "@material-ui/core/Box";
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'left',
-    color: 'black'
+    color: 'black',
+    padding: theme.spacing(2)
+  },
+  row: {
+    marginBottom: theme.spacing(2)
+  },
+  url: {
+    minWidth: 360
   }
 }));
 
@@ -51,43 +56,48 @@ const ProtoView = (props: any) => {
   return (
       <Grid container className={classes.root}>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.row}>
           My Proto
         </Grid>
 
-        <Grid item xs={12}>
-          <TextField id="outlined-basic" label="URL" variant="filled" value={props.serverAddress}
+
+        <Grid item xs={3} className={classes.row}>
+          <Dropdown
+              label="Env"
+              itemValues={["Stuff!"]}
+          />
+        </Grid>
+
+        <Grid item xs={9}>
+          <TextField id="outlined-basic" label="URL" variant="outlined" value={props.serverAddress}
+                     className={classes.url}
                      onChange={handleServerAddrChanged}/>
         </Grid>
 
-        <Grid item xs={6}>
-          <InputLabel id="service-label">Service</InputLabel>
-          <Select
-              labelId="service-label"
+        <Grid item xs={6} className={classes.row}>
+          <Dropdown
+              label="Service"
               onChange={handleServiceChange}
               value={props.selectedService ? props.selectedService.name : ""}
-          >
-            {props.services.map((s: Service) => {
-              return (<MenuItem value={s.name} key={s.name}>{s.name}</MenuItem>)
-            })}
-          </Select>
+              itemValues={props.services.map((s: Service) => {
+                return s.name;
+              })}
+          />
         </Grid>
 
         <Grid item xs={6}>
-          <InputLabel id="method-label">Method</InputLabel>
-          <Select
-              labelId="method-label"
+          <Dropdown
+              label="Method"
               onChange={handleMethodChange}
               value={props.selectedMethod ? props.selectedMethod.name : ""}
-          >
-            {
-              props.selectedService ?
-                  props.selectedService.methodsArray.map((m: Method) => {
-                    return (<MenuItem value={m.name} key={m.name}>{m.name}</MenuItem>)
-                  })
-                  : null
-            }
-          </Select>
+              itemValues={
+                props.selectedService
+                    ? props.selectedService.methodsArray.map((m: Method) => {
+                      return m.name;
+                    })
+                    : null
+              }
+          />
         </Grid>
 
         <Grid item xs={12}>
