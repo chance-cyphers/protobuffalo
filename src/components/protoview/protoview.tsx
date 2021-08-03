@@ -73,7 +73,7 @@ const ProtoView = (props: any) => {
                      onChange={handleServerAddrChanged}/>
         </Grid>
 
-        <Grid item xs={6} className={classes.row}>
+        <Grid item xs={4} className={classes.row}>
           <Dropdown
               label="Service"
               onChange={handleServiceChange}

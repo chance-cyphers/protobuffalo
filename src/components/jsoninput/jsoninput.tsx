@@ -1,31 +1,35 @@
-import React, {ChangeEvent, KeyboardEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, KeyboardEventHandler} from 'react';
 import {connect} from "react-redux";
 import {jsonBodyChanged} from "../../actions/actions";
+import {TextField} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
 
 
 const JsonInput = (props: any) => {
 
   function handleJsonChanged(event: ChangeEvent<HTMLTextAreaElement>) {
     props.jsonBodyChanged(event.target.value);
-    console.log(`selection start: ${event.target.selectionStart}`);
+    // console.log(`selection start: ${event.target.selectionStart}`);
   }
 
-  function makeTabsWork(event: KeyboardEvent<HTMLTextAreaElement>) {
+  function makeTabsWork(event: any) {
     if (event.keyCode === 9) {
       event.preventDefault();
     }
   }
 
   return (
-      <div>
-        <textarea
+      <FormControl fullWidth>
+        <TextField
+            label="JSON Body"
+            multiline
             onChange={handleJsonChanged}
-            onKeyDown={makeTabsWork}
+            onKeyDownCapture={makeTabsWork}
+            minRows={8}
+            variant="outlined"
             value={props.jsonBody}
-            rows={20}
-            cols={60}
         />
-      </div>
+      </FormControl>
   )
 
 };
