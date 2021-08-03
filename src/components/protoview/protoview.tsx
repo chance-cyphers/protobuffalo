@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import TabsView from "../tabsview/tabsview";
 import Dropdown from "./dropdown/dropdown";
+import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +85,7 @@ const ProtoView = (props: any) => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Dropdown
               label="Method"
               onChange={handleMethodChange}
@@ -99,11 +100,21 @@ const ProtoView = (props: any) => {
           />
         </Grid>
 
+        <Grid item xs={2}>
+            <Button
+                onClick={handleInvoke}
+                disabled={!props.selectedService || !props.selectedMethod}
+                variant="contained"
+                color="primary"
+            >
+              Invoke
+            </Button>
+        </Grid>
+
         <Grid item xs={12}>
           <TabsView/>
         </Grid>
 
-        <button onClick={handleInvoke} disabled={!props.selectedService || !props.selectedMethod}>Invoke</button>
         <p>Response: </p>
         <p>{props.response}</p>
       </Grid>
