@@ -22,6 +22,7 @@ const Dropdown = (props: any) => {
             variant="outlined"
             value={props.value}
             onChange={props.onChange}
+            label={props.label}
         >
           { props.itemValues ?
             props.itemValues.map((item: string) => {
