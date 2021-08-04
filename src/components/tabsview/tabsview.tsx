@@ -2,21 +2,19 @@ import React from 'react';
 import {Box, Divider, Grid, Tab, Tabs, Typography} from "@material-ui/core";
 import {connect} from "react-redux";
 import JsonInput from "../jsoninput/jsoninput";
-
+import {tabClicked} from "../../actions/actions";
 
 const TabsView = (props: any) => {
 
-  const [value, setValue] = React.useState('three');
-
   const handleChange = (event: any, newValue: any) => {
-    setValue(newValue);
+    props.tabClicked(newValue);
   };
 
   return (
       <div>
         <Divider/>
 
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+        <Tabs value={props.currentTab} onChange={handleChange} aria-label="simple tabs example">
           <Tab value="one" label="TLS" disabled />
           <Tab value="two" label="Request (form)" disabled />
           <Tab value="three" label="Request (JSON)"/>
@@ -28,7 +26,7 @@ const TabsView = (props: any) => {
         </Grid>
 
         <Grid item xs={12}>
-          <TabPanel value={value} index="one">
+          <TabPanel value={props.currentTab} index="one">
             Do you really need security?
           </TabPanel>
         </Grid>
@@ -37,14 +35,14 @@ const TabsView = (props: any) => {
         </Grid>
         <Grid item xs={12}>
         </Grid>
-        <TabPanel value={value} index="two">
+        <TabPanel value={props.currentTab} index="two">
           No forms are implemented yet :(
         </TabPanel>
-        <TabPanel value={value} index="three">
+        <TabPanel value={props.currentTab} index="three">
           <JsonInput/>
         </TabPanel>
-        <TabPanel value={value} index="four">
-          Response
+        <TabPanel value={props.currentTab} index="four">
+          Response: {props.response}
         </TabPanel>
       </div>
   );
@@ -70,4 +68,11 @@ function TabPanel(props: any) {
   );
 }
 
-export default connect(null, null)(TabsView);
+const mapStateToProps = (state: any) => {
+  const {proto} = state;
+  return proto;
+};
+
+const mapDispatchToProps = {tabClicked};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabsView);

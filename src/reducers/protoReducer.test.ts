@@ -7,11 +7,11 @@ import {
   rpcInvoked,
   rpcSuccess,
   serverAddressChanged,
-  serviceSelected
+  serviceSelected, tabClicked
 } from "../actions/actions";
 import {default as protobuf, Method, Service} from "protobufjs";
 import {invokeGrpc} from "../side-effects/grpc";
-import {Cmd, loop} from "redux-loop";
+import {Cmd, Loop} from "redux-loop";
 
 
 test('load proto', async () => {
@@ -88,9 +88,9 @@ test('json body changed, keeps track of json', () => {
 test('user invokes grpc, dispatches side effect', () => {
   const action = rpcInvoked();
 
-  const result = protoReducer(stateWithServices, action);
+  const result = protoReducer(stateWithServices, action) as Loop<State>;
 
-  expect(result).toEqual(loop(stateWithServices, Cmd.run(invokeGrpc, {
+  expect(result[1]).toEqual(Cmd.run(invokeGrpc, {
     successActionCreator: rpcSuccess,
     failActionCreator: rpcFailed,
     args: [
@@ -100,7 +100,7 @@ test('user invokes grpc, dispatches side effect', () => {
       stateWithServices.jsonBody,
       stateWithServices.serverAddress
     ]
-  })))
+  }))
 });
 
 test('rpc success, sets response', () => {
@@ -125,4 +125,20 @@ test('server address changed updates server address', () => {
   const state = protoReducer(initialState, action) as State;
 
   expect(state.serverAddress).toBe("localhost or something");
+});
+
+test('user invokes grpc, switches to response tab', () => {
+  const action = rpcInvoked();
+
+  const loop = protoReducer(initialState, action) as Loop<State>;
+
+  expect(loop[0].currentTab).toBe('four');
+});
+
+test('tab clicked, changes tab', () => {
+  const action = tabClicked('four');
+
+  const state = protoReducer(initialState, action) as State;
+
+  expect(state.currentTab).toBe('four');
 });

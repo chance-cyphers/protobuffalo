@@ -115,8 +115,6 @@ const ProtoView = (props: any) => {
           <TabsView/>
         </Grid>
 
-        <p>Response: </p>
-        <p>{props.response}</p>
       </Grid>
   )
 };

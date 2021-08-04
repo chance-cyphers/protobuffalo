@@ -17,7 +17,7 @@ import {
   rpcFailed,
   rpcSuccess,
   SERVER_ADDRESS_CHANGED,
-  SERVICE_SELECTED
+  SERVICE_SELECTED, TAB_CLICKED
 } from "../actions/actions";
 import {Method, Namespace, ReflectionObject, Root, Service} from "protobufjs";
 import {Cmd, loop, Loop} from "redux-loop";
@@ -34,7 +34,8 @@ export const initialState = {
   response: undefined,
   protoPath: undefined,
   packageDefinition: undefined,
-  serverAddress: "localhost:50051"
+  serverAddress: "localhost:50051",
+  currentTab: "three"
 };
 
 export interface State {
@@ -46,7 +47,8 @@ export interface State {
   response?: string
   protoPath?: string
   packageDefinition?: PackageDefinition,
-  serverAddress: string
+  serverAddress: string,
+  currentTab: string
 }
 
 export default function (state: State = initialState, action: Action): State | Loop<State> {
@@ -88,7 +90,7 @@ export default function (state: State = initialState, action: Action): State | L
   }
 
   if (action.type === RPC_INVOKED) {
-    return loop(state, Cmd.run(invokeGrpc, {
+    return loop({...state, currentTab: 'four'}, Cmd.run(invokeGrpc, {
       successActionCreator: rpcSuccess,
       failActionCreator: rpcFailed,
       args: [
@@ -133,6 +135,10 @@ export default function (state: State = initialState, action: Action): State | L
       selectedService: services[0],
       selectedMethod: services[0].methodsArray[0]
     };
+  }
+
+  if (action.type === TAB_CLICKED) {
+    return {...state, currentTab: action.payload};
   }
 
   return state;
