@@ -15,9 +15,12 @@ app.whenReady().then(() => {
 });
 
 function createWindow() {
+    const width = 900;
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: width,
+        height: width * 6/8,
+        minWidth: width,
+        minHeight: width * 6/8,
         webPreferences: {
             nodeIntegration: true
         }
