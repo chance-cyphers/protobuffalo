@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, KeyboardEventHandler} from 'react';
+import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
 import {jsonBodyChanged} from "../../actions/actions";
 import {TextField} from "@material-ui/core";
