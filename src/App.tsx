@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import ProtoView from "./components/protoview/protoview";
 import {loadProtoClicked} from "./actions/actions";
-import {createTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
+import {unstable_createMuiStrictModeTheme as createTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
 import {connect} from "react-redux";
 
 const theme = createTheme({
