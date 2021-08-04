@@ -23,6 +23,7 @@ const Dropdown = (props: any) => {
             value={props.value}
             onChange={props.onChange}
             label={props.label}
+            disabled={!props.itemValues?.length}
         >
           { props.itemValues ?
             props.itemValues.map((item: string) => {
