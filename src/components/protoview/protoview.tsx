@@ -64,7 +64,8 @@ const ProtoView = (props: any) => {
         <Grid item xs={3} className={classes.row}>
           <Dropdown
               label="Env"
-              itemValues={["Stuff!"]}
+              itemValues={["Stusff!"]}
+              value=""
           />
         </Grid>
 
