@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import ProtoView from "./components/protoview/protoview";
 import {loadProtoClicked} from "./actions/actions";
-import {createMuiTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
+import {createTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
 import {connect} from "react-redux";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       light: '#6ab7ff',

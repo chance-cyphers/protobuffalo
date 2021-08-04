@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Divider, Grid, Tab, Tabs, Typography} from "@material-ui/core";
+import {Box, Divider, Grid, Tab, Tabs} from "@material-ui/core";
 import {connect} from "react-redux";
 import JsonInput from "../jsoninput/jsoninput";
 import {tabClicked} from "../../actions/actions";
@@ -15,8 +15,8 @@ const TabsView = (props: any) => {
         <Divider/>
 
         <Tabs value={props.currentTab} onChange={handleChange} aria-label="simple tabs example">
-          <Tab value="one" label="TLS" disabled />
-          <Tab value="two" label="Request (form)" disabled />
+          <Tab value="one" label="TLS" disabled/>
+          <Tab value="two" label="Request (form)" disabled/>
           <Tab value="three" label="Request (JSON)"/>
           <Tab value="four" label="Response"/>
         </Tabs>
@@ -61,7 +61,7 @@ function TabPanel(props: any) {
       >
         {value === index && (
             <Box p={3}>
-              <Typography>{children}</Typography>
+              {children}
             </Box>
         )}
       </div>
