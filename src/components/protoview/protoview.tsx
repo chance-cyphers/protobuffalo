@@ -67,7 +67,6 @@ const ProtoView = (props: any) => {
               itemValues={[]}
               value=""
           />
-
         </Grid>
 
         <Grid item xs={9}>

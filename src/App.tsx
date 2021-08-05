@@ -4,6 +4,7 @@ import ProtoView from "./components/protoview/protoview";
 import {loadProtoClicked} from "./actions/actions";
 import {unstable_createMuiStrictModeTheme as createTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
 import {connect} from "react-redux";
+import {ipcRenderer} from "electron";
 
 const theme = createTheme({
   palette: {
@@ -44,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+ipcRenderer.on('save-file', (event, message) => {
+  console.log(`message: ${JSON.stringify(message)}, event: ${JSON.stringify(event)}`);
+});
 
 function App(props: any) {
 
@@ -72,7 +76,6 @@ function App(props: any) {
           </Grid>
 
           <Grid item xs={9}>
-            {/*<Button variant="contained" onClick={handleClick}>Load Proto</Button>*/}
             <ProtoView/>
           </Grid>
 

@@ -13,7 +13,6 @@ app.whenReady().then(() => {
   installExtension(REDUX_DEVTOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
-
 });
 
 const template = [
@@ -34,7 +33,9 @@ const template = [
       {
         label: 'Save',
         accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Control+S',
-        click: () => { console.log('Electron rocks!') }
+        click: () => {
+          mainWindow.send('save-file', {"DATA": "STUFF"})
+        }
       },
       { role: "close" }
     ]
@@ -84,8 +85,6 @@ function createWindow() {
       nodeIntegration: true
     }
   });
-
-
 
   mainWindow.loadURL(
       isDev
