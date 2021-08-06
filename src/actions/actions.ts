@@ -14,6 +14,7 @@ export const GENERAL_ERROR = "GENERAL_ERROR";
 export const PACKAGE_DEFINITION_LOADED = "PACKAGE_DEFINITION_LOADED";
 export const SERVER_ADDRESS_CHANGED = "SERVER_ADDRESS_CHANGED";
 export const TAB_CLICKED = "TAB_CLICKED";
+export const SAVE_INVOKED = "SAVE_INVOKED";
 
 export type Action =
     { type: typeof PROTO_LOADED, payload: Root }
@@ -29,6 +30,7 @@ export type Action =
     | { type: typeof PACKAGE_DEFINITION_LOADED, payload: PackageDefinition }
     | { type: typeof SERVER_ADDRESS_CHANGED, payload: string }
     | { type: typeof TAB_CLICKED, payload: string }
+    | { type: typeof SAVE_INVOKED }
 
 export function protoLoaded(root: Root): Action {
   return {type: PROTO_LOADED, payload: root};
@@ -80,4 +82,8 @@ export function serverAddressChanged(value: string): Action {
 
 export function tabClicked(value: string): Action {
   return {type: TAB_CLICKED, payload: value};
+}
+
+export function saveInvoked(): Action {
+  return {type: SAVE_INVOKED};
 }

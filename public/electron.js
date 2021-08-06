@@ -34,7 +34,7 @@ const template = [
         label: 'Save',
         accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Control+S',
         click: () => {
-          mainWindow.send('save-file', {"DATA": "STUFF"})
+          mainWindow.send('save-invoked', {"DATA": "STUFF"})
         }
       },
       { role: "close" }

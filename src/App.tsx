@@ -2,9 +2,15 @@ import React from 'react';
 import './App.css';
 import ProtoView from "./components/protoview/protoview";
 import {loadProtoClicked} from "./actions/actions";
-import {unstable_createMuiStrictModeTheme as createTheme, Divider, Grid, makeStyles, ThemeProvider} from "@material-ui/core";
+import {
+  Divider,
+  Grid,
+  makeStyles,
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme as createTheme
+} from "@material-ui/core";
 import {connect} from "react-redux";
-import {ipcRenderer} from "electron";
+import EventListener from "./components/eventlistener/eventlistener";
 
 const theme = createTheme({
   palette: {
@@ -45,10 +51,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-ipcRenderer.on('save-file', (event, message) => {
-  console.log(`message: ${JSON.stringify(message)}, event: ${JSON.stringify(event)}`);
-});
-
 function App(props: any) {
 
   const classes = useStyles();
@@ -59,6 +61,8 @@ function App(props: any) {
 
   return (
       <ThemeProvider theme={theme}>
+        <EventListener/>
+
         <Grid container className={classes.root}>
 
           <Grid item xs={3}>

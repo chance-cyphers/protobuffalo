@@ -5,13 +5,14 @@ import {
   protoLoaded,
   rpcFailed,
   rpcInvoked,
-  rpcSuccess,
+  rpcSuccess, saveInvoked,
   serverAddressChanged,
   serviceSelected, tabClicked
 } from "../actions/actions";
 import {default as protobuf, Method, Service} from "protobufjs";
 import {invokeGrpc} from "../side-effects/grpc";
 import {Cmd, Loop} from "redux-loop";
+import {saveFile} from "../side-effects/saveFile";
 
 
 test('load proto', async () => {
@@ -141,4 +142,17 @@ test('tab clicked, changes tab', () => {
   const state = protoReducer(initialState, action) as State;
 
   expect(state.currentTab).toBe('four');
+});
+
+test('saves file when user invokes save', () => {
+  const action = saveInvoked();
+
+  const loop = protoReducer(initialState, action) as Loop<State>;
+
+  expect(loop[0]).toEqual(initialState);
+  expect(loop[1]).toEqual(Cmd.run(saveFile, {
+    args: [
+        initialState
+    ]
+  }));
 });

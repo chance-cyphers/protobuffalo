@@ -15,7 +15,7 @@ import {
   RPC_INVOKED,
   RPC_SUCCESS,
   rpcFailed,
-  rpcSuccess,
+  rpcSuccess, SAVE_INVOKED,
   SERVER_ADDRESS_CHANGED,
   SERVICE_SELECTED, TAB_CLICKED
 } from "../actions/actions";
@@ -24,6 +24,7 @@ import {Cmd, loop, Loop} from "redux-loop";
 import {invokeGrpc, loadProto_protobufjs, loadProto_protoLoader} from "../side-effects/grpc";
 import {showFileDialog} from "../side-effects/loadFile";
 import {PackageDefinition} from "@grpc/proto-loader";
+import {saveFile} from "../side-effects/saveFile";
 
 export const initialState = {
   proto: undefined,
@@ -139,6 +140,12 @@ export default function (state: State = initialState, action: Action): State | L
 
   if (action.type === TAB_CLICKED) {
     return {...state, currentTab: action.payload};
+  }
+
+  if (action.type === SAVE_INVOKED) {
+    return loop(state, Cmd.run(saveFile, {
+      args: [state]
+    }));
   }
 
   return state;
