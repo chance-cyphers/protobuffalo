@@ -1,9 +1,9 @@
 import {
-  Action,
+  Action, APP_STARTED,
   GENERAL_ERROR,
   generalError,
-  JSON_BODY_CHANGED,
-  LOAD_PROTO_CLICKED,
+  JSON_BODY_CHANGED, LOAD_FILE_SUCCESS,
+  LOAD_PROTO_CLICKED, loadFileSuccess,
   METHOD_SELECTED,
   PACKAGE_DEFINITION_LOADED,
   packageDefinitionLoaded,
@@ -24,11 +24,12 @@ import {Cmd, loop, Loop} from "redux-loop";
 import {invokeGrpc, loadProto_protobufjs, loadProto_protoLoader} from "../side-effects/grpc";
 import {showFileDialog} from "../side-effects/loadFile";
 import {PackageDefinition} from "@grpc/proto-loader";
-import {saveFile} from "../side-effects/saveFile";
+import {loadFile, saveFile} from "../side-effects/fileIO";
 
 export const initialState = {
   proto: undefined,
   services: Array<Service>(),
+  serviceNames: Array<string>(),
   selectedService: undefined,
   selectedMethod: undefined,
   jsonBody: '{\n  "awesome_field": "sahhh",\n  "just_an_average_string": "adsgf"\n}',
@@ -42,6 +43,7 @@ export const initialState = {
 export interface State {
   proto?: Root
   services: Service[]
+  serviceNames: string[]
   selectedService?: Service
   selectedMethod?: Method
   jsonBody: string
@@ -129,12 +131,15 @@ export default function (state: State = initialState, action: Action): State | L
   if (action.type === PROTO_LOADED) {
     const services = getServices(action.payload);
 
+    const serviceNames = services.map((s) => {return s.name});
+
     return {
       ...state,
       proto: action.payload,
       services: services,
       selectedService: services[0],
-      selectedMethod: services[0].methodsArray[0]
+      selectedMethod: services[0].methodsArray[0],
+      serviceNames: serviceNames
     };
   }
 
@@ -144,8 +149,25 @@ export default function (state: State = initialState, action: Action): State | L
 
   if (action.type === SAVE_INVOKED) {
     return loop(state, Cmd.run(saveFile, {
-      args: [state]
+      args: [
+          state,
+          action.payload
+      ]
     }));
+  }
+
+  if (action.type === APP_STARTED) {
+    return loop(state, Cmd.run(loadFile, {
+      successActionCreator: loadFileSuccess,
+      args: [
+          action.payload
+      ]
+    }))
+  }
+
+  if (action.type === LOAD_FILE_SUCCESS) {
+    if (action.payload)
+    return action.payload;
   }
 
   return state;

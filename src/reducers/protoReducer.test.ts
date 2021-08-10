@@ -1,6 +1,7 @@
 import protoReducer, {initialState, State} from "./protoReducer";
 import {
-  jsonBodyChanged,
+  appStarted,
+  jsonBodyChanged, loadFileSuccess,
   methodSelected,
   protoLoaded,
   rpcFailed,
@@ -12,7 +13,7 @@ import {
 import {default as protobuf, Method, Service} from "protobufjs";
 import {invokeGrpc} from "../side-effects/grpc";
 import {Cmd, Loop} from "redux-loop";
-import {saveFile} from "../side-effects/saveFile";
+import {loadFile, saveFile} from "../side-effects/fileIO";
 
 
 test('load proto', async () => {
@@ -145,14 +146,28 @@ test('tab clicked, changes tab', () => {
 });
 
 test('saves file when user invokes save', () => {
-  const action = saveInvoked();
+  const action = saveInvoked("/userData/path/somewhere");
 
   const loop = protoReducer(initialState, action) as Loop<State>;
 
   expect(loop[0]).toEqual(initialState);
   expect(loop[1]).toEqual(Cmd.run(saveFile, {
     args: [
-        initialState
+      initialState,
+      "/userData/path/somewhere"
     ]
   }));
 });
+
+test('when app is started, loads last proto', () => {
+  const action = appStarted('/path');
+
+  const loop = protoReducer(initialState, action) as Loop<State>;
+
+  expect(loop[0]).toEqual(initialState);
+  expect(loop[1]).toEqual(Cmd.run(loadFile, {
+    successActionCreator: loadFileSuccess,
+    args: ['/path']
+  }));
+});
+

@@ -1,5 +1,6 @@
 import {Root} from "protobufjs";
 import {PackageDefinition} from "@grpc/proto-loader";
+import {State} from "../reducers/protoReducer";
 
 export const PROTO_LOADED = "PROTO_LOADED";
 export const SERVICE_SELECTED = "SERVICE_SELECTED";
@@ -15,6 +16,8 @@ export const PACKAGE_DEFINITION_LOADED = "PACKAGE_DEFINITION_LOADED";
 export const SERVER_ADDRESS_CHANGED = "SERVER_ADDRESS_CHANGED";
 export const TAB_CLICKED = "TAB_CLICKED";
 export const SAVE_INVOKED = "SAVE_INVOKED";
+export const APP_STARTED = "APP_STARTED";
+export const LOAD_FILE_SUCCESS = "LOAD_FILE_SUCCESS";
 
 export type Action =
     { type: typeof PROTO_LOADED, payload: Root }
@@ -30,7 +33,9 @@ export type Action =
     | { type: typeof PACKAGE_DEFINITION_LOADED, payload: PackageDefinition }
     | { type: typeof SERVER_ADDRESS_CHANGED, payload: string }
     | { type: typeof TAB_CLICKED, payload: string }
-    | { type: typeof SAVE_INVOKED }
+    | { type: typeof SAVE_INVOKED, payload: string }
+    | { type: typeof APP_STARTED, payload: string }
+    | { type: typeof LOAD_FILE_SUCCESS, payload: State | null}
 
 export function protoLoaded(root: Root): Action {
   return {type: PROTO_LOADED, payload: root};
@@ -84,6 +89,14 @@ export function tabClicked(value: string): Action {
   return {type: TAB_CLICKED, payload: value};
 }
 
-export function saveInvoked(): Action {
-  return {type: SAVE_INVOKED};
+export function saveInvoked(userDataPath: string): Action {
+  return {type: SAVE_INVOKED, payload: userDataPath};
+}
+
+export function appStarted(userDataPath: string): Action {
+  return {type: APP_STARTED, payload: userDataPath};
+}
+
+export function loadFileSuccess(protoState: State | null): Action {
+  return {type: LOAD_FILE_SUCCESS, payload: protoState};
 }

@@ -1,19 +1,21 @@
 const electron = require('electron');
-
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const isDev = require('electron-is-dev');
 const {default: installExtension, REDUX_DEVTOOLS} = require('electron-devtools-installer');
+const userDataPath = app.getPath('userData');
 
 const path = require('path');
 
 let mainWindow;
+
 
 app.whenReady().then(() => {
   installExtension(REDUX_DEVTOOLS)
       .then((name) => console.log(`Added Extension:  ${name}`))
       .catch((err) => console.log('An error occurred: ', err));
 });
+
 
 const template = [
   {
@@ -34,7 +36,7 @@ const template = [
         label: 'Save',
         accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Control+S',
         click: () => {
-          mainWindow.send('save-invoked', {"DATA": "STUFF"})
+          mainWindow.send('save-invoked', {"user-data-path": userDataPath});
         }
       },
       { role: "close" }
@@ -91,6 +93,10 @@ function createWindow() {
           ? 'http://localhost:3000'
           : `file://${path.join(__dirname, '../build/index.html')}`,
   );
+
+  mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.send('app-started', {"user-data-path": userDataPath});
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null

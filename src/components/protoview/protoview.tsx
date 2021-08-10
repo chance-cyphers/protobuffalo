@@ -79,7 +79,7 @@ const ProtoView = (props: any) => {
           <Dropdown
               label="Service"
               onChange={handleServiceChange}
-              value={props.selectedService ? props.selectedService.name : ""}
+                value={props.selectedService ? props.selectedService.name : ""}
               itemValues={props.services.map((s: Service) => {
                 return s.name;
               })}
@@ -93,7 +93,7 @@ const ProtoView = (props: any) => {
               value={props.selectedMethod ? props.selectedMethod.name : ""}
               itemValues={
                 props.selectedService
-                    ? props.selectedService.methodsArray.map((m: Method) => {
+                    ? props.selectedService.methodsArray?.map((m: Method) => {
                       return m.name;
                     })
                     : null
